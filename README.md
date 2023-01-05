@@ -19,13 +19,13 @@ Codewise, it is as simple as below:
 Every day of the week has its unique color, like this:
 ![image](https://github.com/Jinwen-XU/jwjournal/raw/main/screenshots/demo2.png)
 
-By the way, the conversion from plain date string like `2023-01-01` to natural language like `January 1, 2023 | Sunday` is done automatically by `jwjournal` and has multilingual support. Thus, for example:
+By the way, the conversion from plain date string like `2023-01-01` to natural language like `January 1, 2023 | Sunday` is done automatically by `jwjournal` and has multilingual support. Thus, for example (with `\UseLanguage{...}`):
 - Chinese: ![image](https://github.com/Jinwen-XU/jwjournal/raw/main/screenshots/demo3-cn.png)
 - French: ![image](https://github.com/Jinwen-XU/jwjournal/raw/main/screenshots/demo3-fr.png)
 - German: ![image](https://github.com/Jinwen-XU/jwjournal/raw/main/screenshots/demo3-de.png)
 - Japanese: ![image](https://github.com/Jinwen-XU/jwjournal/raw/main/screenshots/demo3-jp.png)
 - Spanish: ![image](https://github.com/Jinwen-XU/jwjournal/raw/main/screenshots/demo3-es.png)
-- ...
+- ... and more...
 
 ## Usage
 
