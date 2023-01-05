@@ -2,7 +2,7 @@
 \ProvidesExplClass
   {jwjournal}
   {2023/01/05} {}
-  {Journal class for JW}
+  {JW's journal class}
 
 \keys_define:nn { jwjournal }
   {
@@ -13,15 +13,22 @@
     , color~entry .bool_set:N   = \l__jwjournal_color_entry_bool
     , color-entry .bool_set:N   = \l__jwjournal_color_entry_bool
     , unknown     .code:n       = {
+                                    \PassOptionsToClass { \CurrentOption } { minimart }
                                     \PassOptionsToClass { \CurrentOption } { einfart }
                                     \PassOptionsToPackage { \CurrentOption } { ProjLib }
                                   }
   }
 \ProcessKeyOptions [ jwjournal ]
 
-\PassOptionsToClass { use indent = false } { einfart }
-
-\LoadClass { einfart }
+\sys_if_engine_pdftex:TF
+  {
+    \PassOptionsToClass { use indent = false } { minimart }
+    \LoadClass { minimart }
+  }
+  {
+    \PassOptionsToClass { use indent = false } { einfart }
+    \LoadClass { einfart }
+  }
 
 \RequirePackage { ProjLib }
 
@@ -92,21 +99,21 @@
     \end{description}
   }
 
-\tl_new:N \g_jwjournal_contents_tl
+\tl_new:N \g_jwjournal_content_tl
 \NewDocumentEnvironment { jwjournal } { +b }
   {
-    \tl_gset:Nn \g_jwjournal_contents_tl { #1 }
-    \jwjournal_parse_contents:N \g_jwjournal_contents_tl
-    \tl_use:N \g_jwjournal_contents_tl
+    \tl_gset:Nn \g_jwjournal_content_tl { #1 }
+    \jwjournal_parse_content:N \g_jwjournal_content_tl
+    \tl_use:N \g_jwjournal_content_tl
   }
   {}
 
 \seq_new:N \l_jwjournal_tmp_seq
 \cs_generate_variant:Nn \regex_split:nnN { nVN }
-\cs_new:Nn \jwjournal_parse_contents:N
+\cs_new:Nn \jwjournal_parse_content:N
   {
     \regex_split:nVN { \c{par} } #1 \l_jwjournal_tmp_seq
-    \tl_set:Nn \g_jwjournal_contents_tl {}
+    \tl_set:Nn \g_jwjournal_content_tl {}
     \seq_map_inline:Nn \l_jwjournal_tmp_seq
       {
         \tl_set:Nn \l_tmpa_tl { ❄️ ##1 }
@@ -132,10 +139,10 @@
         \regex_replace_all:nnN { ❄️ } { } \l_tmpa_tl
         \bool_if:NT \l_tmpa_bool
           {
-            \tl_gput_right:Nn \g_jwjournal_contents_tl { \g_jwjournal_enlarge_page_by_one_line_tl }
+            \tl_gput_right:Nn \g_jwjournal_content_tl { \g_jwjournal_enlarge_page_by_one_line_tl }
           }
-        \tl_gput_right:NV \g_jwjournal_contents_tl \l_tmpa_tl
-        \tl_gput_right:Nn \g_jwjournal_contents_tl { \par }
+        \tl_gput_right:NV \g_jwjournal_content_tl \l_tmpa_tl
+        \tl_gput_right:Nn \g_jwjournal_content_tl { \par }
       }
   }
 

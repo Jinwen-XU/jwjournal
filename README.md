@@ -86,8 +86,9 @@ Indentations are not important, but paragraphs need to be separated by a blank l
 
 ## TeXnical details
 
-### Engine
-First of all, it is based on the document class `einfart`, thus can only be compiled with XeLaTeX or LuaLaTeX.
+### Engines and base classes
+- With pdfLaTeX, the base class is `minimart`.
+- With XeLaTeX or LuaLaTeX, the base class is `einfart`.
 
 ### Colors
 The colors from Monday to Sunday have the internal names `jwjournal-color-1`, ..., `jwjournal-color-7`. Currently they are defined as:
@@ -102,10 +103,10 @@ The colors from Monday to Sunday have the internal names `jwjournal-color-1`, ..
 ```
 
 ### Functionality
-The main features are achieved with the power of LaTeX3's regex functionality. It scans the content paragraph by paragraph and converts recognized patterns into corresponding TeX commands. Thus, `2023-01-01 Weather` becomes `\JWJournalEntry{2023-01-01}{Weather}`, `[Note] ...` becomes `\item[Note] ...` inside a `description` environment, and `+++` is essentially `\enlargethispage*{\baselineskip}`.
+The main features are achieved with the power of LaTeX3's regex functionality. It scans the content paragraph by paragraph and converts recognized patterns into corresponding TeX commands. Thus, `2023-01-01 Weather` becomes `\JWJournalEntry{2023-01-01}{Weather}`, `[Note] ...` becomes `\item[Note] ...` inside a `description` environment, and `+++` is essentially `\enlargethispage*{\baselineskip}`. However, this comes with a price: in order to scan the content, it is firstly stored in a macro `\g_jwjournal_content_tl`, and that means that you cannot use commands like `\verb` in your main text.
 
 ### Scroll mode
-The scroll mode is achieved by directly accessing `\pdfpageheight` (XeTeX) or `\pageheight` (LuaTeX). The minimal page height is set to be `10in`. It is worth noting that in order to calculate the height needed, the entire content are put into a single box, which puts a limitation on the length of your document.
+The scroll mode is achieved by directly accessing `\pdfpageheight` (pdfTeX and XeTeX) or `\pageheight` (LuaTeX). The minimal page height is set to be `10in`. It is worth noting that in order to calculate the height needed, the entire content are put into a single box, which puts a limitation on the length of your document (but this usually wouldn't be a problem).
 
 # License
 
