@@ -16,10 +16,14 @@ Codewise, it is as simple as below:
   [Food] And had ice-cream for lunch!
 ```
 
+> It is also possible to write the date as `2023/01/01`.
+
+> With the options `month-day-year` or `day-month-year`, you can also write date in the format `mm-dd-yyyy` or `dd-mm-yyyy`, respectively. You may refer to the English and French demo documents for examples.
+
 Every day of the week has its unique color, like this:
 ![image](https://github.com/Jinwen-XU/jwjournal/raw/main/screenshots/demo2.png)
 
-By the way, the conversion from plain date string like `2023-01-01` to natural language like `January 1, 2023 | Sunday` is done automatically by `jwjournal` and has multilingual support. Thus, for example (with `\UseLanguage{...}`):
+By the way, the conversion from plain date string like `2023-01-01` to natural language like `January 1, 2023 | Sunday` is done automatically by `jwjournal` and has multilingual support. Thus, for example (via `\UseLanguage`):
 - Chinese: ![image](https://github.com/Jinwen-XU/jwjournal/raw/main/screenshots/demo3-cn.png)
 - French: ![image](https://github.com/Jinwen-XU/jwjournal/raw/main/screenshots/demo3-fr.png)
 - German: ![image](https://github.com/Jinwen-XU/jwjournal/raw/main/screenshots/demo3-de.png)
@@ -39,6 +43,7 @@ The structure of the document is very simple:
 \end{document}
 ```
 The options are:
+- `month-day-year` or `day-month-year` for other date format
 - `paperstyle = ...` adjusts the paper color, options include: lightyellow、yellow、parchment、green、lightgray、gray、nord、dark...
 - `color entry` adds more color to the title of each entry
 - `scroll` turns on the scroll mode and can generate a single-page pdf similar to a long screenshot
@@ -104,6 +109,14 @@ The colors from Monday to Sunday have the internal names `jwjournal-color-1`, ..
 
 ### Functionality
 The main features are achieved with the power of LaTeX3's regex functionality. It scans the content paragraph by paragraph and converts recognized patterns into corresponding TeX commands. Thus, `2023-01-01 Weather` becomes `\JWJournalEntry{2023-01-01}{Weather}`, `[Note] ...` becomes `\item[Note] ...` inside a `description` environment, and `+++` is essentially `\enlargethispage*{\baselineskip}`. However, this comes with a price: in order to scan the content, it is firstly stored in a macro `\g_jwjournal_content_tl`, and that means that you cannot use commands like `\verb` in your main text.
+
+### Dates
+The conversion of date string to natural language, and the calculation of the day of the week are accomplished by `projlib-date`, part of the `ProjLib` toolkit, which is still at its early stage, in some aspects not as functional as existing package such as `datenumber`, but should evolve through time.
+
+### Language and date format
+Language and date format can both be set in two ways: as class option or with corresponding commands.
+- The user-level command for setting language is `\UseLanguage`, provided by `projlib-language`; the one for setting date format is `\SetDatetimeInputFormat`, provided by `projlib-date`.
+- When you set the language, it is not exactly the same using class option or using command: when you select a language via class option, only the setting for this language would be loaded; however, with `\UseLanguage`, it would load *all* the language settings and then switch to your selected one. Sometimes the page breaking behavior differs slightly. Personally I prefer the `\UseLanguage` approach, for this would allow you to switch language in the middle of your document.
 
 ### Scroll mode
 The scroll mode is achieved by directly accessing `\pdfpageheight` (pdfTeX and XeTeX) or `\pageheight` (LuaTeX). The minimal page height is set to be `10in`. It is worth noting that in order to calculate the height needed, the entire content are put into a single box, which puts a limitation on the length of your document (but this usually wouldn't be a problem).

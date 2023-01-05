@@ -12,7 +12,7 @@
 \NeedsTeXFormat{LaTeX2e}[2022-06-01]
 \ProvidesExplClass
   {jwjournal}
-  {2023/01/05} {}
+  {2023/01/05a} {}
   {JW's journal class}
 
 \keys_define:nn { jwjournal }
@@ -78,7 +78,7 @@
         \enspace
         \tikz [x=.75ex,y=.75ex,line~width=.2ex,line~join=round,baseline=-.3ex] \draw [jwjournal-entry!60!main-text] (0,.5) -- (.5,1) -- (1,.5) -- (.5,0) -- (0,.5) -- cycle;
         \enspace
-        \projlib_datetime_display_week:n { #1 }
+        \projlib_datetime_display_week_uppercase:n { #1 }
         \tl_if_blank:eF { #2 }
           {
             \enspace
@@ -141,6 +141,18 @@
           }
         \regex_replace_all:nnN
           { ❄️ (\ *)? (\d{4}-\d{1,2}-\d{1,2}) (\ *)? (.*) }
+          { \c{JWJournalEntry} {\2} {\4} }
+          \l_tmpa_tl
+        \regex_replace_all:nnN
+          { ❄️ (\ *)? (\d{1,2}-\d{1,2}-\d{4}) (\ *)? (.*) }
+          { \c{JWJournalEntry} {\2} {\4} }
+          \l_tmpa_tl
+        \regex_replace_all:nnN
+          { ❄️ (\ *)? (\d{4} \D \d{1,2} \D \d{1,2}) (\ *)? (.*) }
+          { \c{JWJournalEntry} {\2} {\4} }
+          \l_tmpa_tl
+        \regex_replace_all:nnN
+          { ❄️ (\ *)? (\d{1,2} \D \d{1,2} \D \d{4}) (\ *)? (.*) }
           { \c{JWJournalEntry} {\2} {\4} }
           \l_tmpa_tl
         \regex_replace_all:nnN
