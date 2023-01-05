@@ -29,13 +29,13 @@
 \RequirePackage { tcolorbox }
 \RequirePackage { needspace }
 
-\colorlet { jwjournal-color-1 } { yellow!50!green }
+\colorlet { jwjournal-color-1 } { yellow!50!green  }
 \colorlet { jwjournal-color-2 } { yellow!70!orange }
-\colorlet { jwjournal-color-3 } { cyan!70!blue }
-\colorlet { jwjournal-color-4 } { violet }
-\colorlet { jwjournal-color-5 } { yellow!40!cyan }
+\colorlet { jwjournal-color-3 } { cyan!70!blue     }
+\colorlet { jwjournal-color-4 } { violet           }
+\colorlet { jwjournal-color-5 } { yellow!40!cyan   }
 \colorlet { jwjournal-color-6 } { yellow!20!orange }
-\colorlet { jwjournal-color-7 } { red!20!orange }
+\colorlet { jwjournal-color-7 } { red!20!orange    }
 
 \NewDocumentCommand \JWJournalEntry { m m }
   {
