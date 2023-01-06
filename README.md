@@ -48,7 +48,7 @@ The options are:
 - `color entry` adds more color to the title of each entry
 - `scroll` turns on the scroll mode and can generate a single-page pdf similar to a long screenshot
 
-And there are only three syntaxes for the main text:
+And there are only two major syntaxes for the main text:
 1) Title
     - Any line begins with date like `2023-01-01` would be regard as the Title line.
     - You may write the weather and/or location after the date.
@@ -62,8 +62,10 @@ And there are only three syntaxes for the main text:
       ```
       [Note] In hindsight, it was the right decision.
       ```
-3) `+++`
-    - In some rare case, if a single sentence or a few words fall to the next page, you may write a `+++` to enlarge the current page by one line.
+
+With a few additional for adjustment.
+- `+++`: If a single sentence or a few words fall to the next page, you may write a `+++` to enlarge the current page by one line.
+- `===`: In case that your journal becomes too long for the program to handle, write a `===` to separate it into pieces.
 
 > You may also refer to the demo documents to see their behaviors in action.
 
@@ -108,7 +110,7 @@ The colors from Monday to Sunday have the internal names `jwjournal-color-1`, ..
 ```
 
 ### Functionality
-The main features are achieved with the power of LaTeX3's regex functionality. It scans the content paragraph by paragraph and converts recognized patterns into corresponding TeX commands. Thus, `2023-01-01 Weather` becomes `\JWJournalEntry{2023-01-01}{Weather}`, `[Note] ...` becomes `\item[Note] ...` inside a `description` environment, and `+++` is essentially `\enlargethispage*{\baselineskip}`. However, this comes with a price: in order to scan the content, it is firstly stored in a macro `\g_jwjournal_content_tl`, and that means that you cannot use commands like `\verb` in your main text.
+The main features are achieved with the power of LaTeX3's regex functionality. It scans the content paragraph by paragraph and converts recognized patterns into corresponding TeX commands. Thus, `2023-01-01 Weather` becomes `\JWJournalEntry{2023-01-01}{Weather}`, `[Note] ...` becomes `\item[Note] ...` inside a `description` environment, and `+++` is essentially `\enlargethispage*{\baselineskip}`, etc. However, this comes with a price: in order to scan the content, it is firstly stored in a macro `\g_jwjournal_content_tl`, and that means that you cannot use commands like `\verb` in your main text.
 
 ### Dates
 The conversion of date string to natural language, and the calculation of the day of the week are accomplished by `projlib-date`, part of the `ProjLib` toolkit, which is still at its early stage, in some aspects not as functional as existing package such as `datenumber`, but should evolve through time.

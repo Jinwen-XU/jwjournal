@@ -128,42 +128,47 @@
     \seq_map_inline:Nn \l_jwjournal_tmp_seq
       {
         \tl_set:Nn \l_tmpa_tl { ❄️ ##1 }
-        \regex_match:nVTF { ❄️ +++ (.*) } \l_tmpa_tl
+        \regex_match:nVT { ❄️ === (.*) } \l_tmpa_tl
           {
-            \bool_set_true:N \l_tmpa_bool
-            \regex_replace_all:nnN
+            \tl_gput_right:Nn \g_jwjournal_content_tl
+              {
+                \end { jwjournal }
+                \begin { jwjournal }
+              }
+            \regex_replace_once:nnN
+              { ❄️ === (.*) }
+              { ❄️ \1 }
+              \l_tmpa_tl
+          }
+        \regex_match:nVT { ❄️ +++ (.*) } \l_tmpa_tl
+          {
+            \tl_gput_right:Nn \g_jwjournal_content_tl { \g_jwjournal_enlarge_page_by_one_line_tl }
+            \regex_replace_once:nnN
               { ❄️ +++ (.*) }
               { ❄️ \1 }
               \l_tmpa_tl
           }
-          {
-            \bool_set_false:N \l_tmpa_bool
-          }
-        \regex_replace_all:nnN
+        \regex_replace_once:nnN
           { ❄️ (\ *)? (\d{4}-\d{1,2}-\d{1,2}) (\ *)? (.*) }
           { \c{JWJournalEntry} {\2} {\4} }
           \l_tmpa_tl
-        \regex_replace_all:nnN
+        \regex_replace_once:nnN
           { ❄️ (\ *)? (\d{1,2}-\d{1,2}-\d{4}) (\ *)? (.*) }
           { \c{JWJournalEntry} {\2} {\4} }
           \l_tmpa_tl
-        \regex_replace_all:nnN
+        \regex_replace_once:nnN
           { ❄️ (\ *)? (\d{4} \D \d{1,2} \D \d{1,2}) (\ *)? (.*) }
           { \c{JWJournalEntry} {\2} {\4} }
           \l_tmpa_tl
-        \regex_replace_all:nnN
+        \regex_replace_once:nnN
           { ❄️ (\ *)? (\d{1,2} \D \d{1,2} \D \d{4}) (\ *)? (.*) }
           { \c{JWJournalEntry} {\2} {\4} }
           \l_tmpa_tl
-        \regex_replace_all:nnN
+        \regex_replace_once:nnN
           { ❄️ (\[.*\] .*) }
           { \c{JWJournalItem} {\1} }
           \l_tmpa_tl
-        \regex_replace_all:nnN { ❄️ } { } \l_tmpa_tl
-        \bool_if:NT \l_tmpa_bool
-          {
-            \tl_gput_right:Nn \g_jwjournal_content_tl { \g_jwjournal_enlarge_page_by_one_line_tl }
-          }
+        \regex_replace_once:nnN { ❄️ } { } \l_tmpa_tl
         \tl_gput_right:NV \g_jwjournal_content_tl \l_tmpa_tl
         \tl_gput_right:Nn \g_jwjournal_content_tl { \par }
       }
