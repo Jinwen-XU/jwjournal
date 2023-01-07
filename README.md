@@ -63,33 +63,46 @@ And there are only two major syntaxes for the main text:
       [Note] In hindsight, it was the right decision.
       ```
 
-With a few additional for adjustment.
-- `+++`: If a single sentence or a few words fall to the next page, you may write a `+++` to enlarge the current page by one line.
-- `===`: In case that your journal becomes too long for the program to handle, write a `===` to separate it into pieces.
+With a few more for icing on the cake:
+- `+++`: If a single sentence or a few words fall to the next page, you may write a `+++` before that entry to enlarge the current page by one line.
+- `===`: Three or more equal signs `=` would simply be ignored. This is for improving the readability of the code, allowing you to write your journal like:
+  ```
+  2023-01-01 Sunny --- Botanical Garden
+  =====================================
+
+  Today I visited the botanical garden!
+
+  [Food] And had ice-cream for lunch!
+  ```
 
 > You may also refer to the demo documents to see their behaviors in action.
 
-Indentations are not important, but paragraphs need to be separated by a blank line. For the sake of readability, it is recommended to organize your text as follows:
-```
-2023-01-01 Sunny
+Indentations are not important, but paragraphs need to be separated by a blank line. For the sake of readability, it is recommended to organize your text as one of the following ways:
+- with indentation:
+  ```
+  2023-01-01
+  Sunny
+
+    ......
+    ......
+  ```
+- with a separation line:
+  ```
+  2023-01-01 Sunny
+  ================
 
   ......
   ......
-
-
-
-2023-01-02 Cloudy
-
-  ......
-  ......
-
-
-
-2023-01-03 Rainy
+  ```
+- or maybe even:
+  ```
+  ==========
+  2023-01-01    Sunny
+  ==========
 
   ......
   ......
-```
+  ```
 
 ## TeXnical details
 
@@ -110,7 +123,7 @@ The colors from Monday to Sunday have the internal names `jwjournal-color-1`, ..
 ```
 
 ### Functionality
-The main features are achieved with the power of LaTeX3's regex functionality. It scans the content paragraph by paragraph and converts recognized patterns into corresponding TeX commands. Thus, `2023-01-01 Weather` becomes `\JWJournalEntry{2023-01-01}{Weather}`, `[Note] ...` becomes `\item[Note] ...` inside a `description` environment, and `+++` is essentially `\enlargethispage*{\baselineskip}`, etc. However, this comes with a price: in order to scan the content, it is firstly stored in a macro `\g_jwjournal_content_tl`, and that means that you cannot use commands like `\verb` in your main text.
+The main features are achieved with the power of LaTeX3's regex functionality. It scans the content paragraph by paragraph and converts recognized patterns into corresponding TeX commands. Thus, `2023-01-01 Weather` becomes `\JWJournalEntry{2023-01-01}{Weather}`, `[Note] ...` becomes `\item[Note] ...` inside a `description` environment, and `+++` is essentially `\enlargethispage*{\baselineskip}`, etc. However, this comes with a price: in order to scan the content, it is firstly stored in a macro `\g_jwjournal_content_tl`, and that means that you cannot use commands like `\verb` in your main text (unless explicitly `\end{jwjournal}`, write your code, and then `\begin{jwjournal}`).
 
 ### Dates
 The conversion of date string to natural language, and the calculation of the day of the week are accomplished by `projlib-date`, part of the `ProjLib` toolkit, which is still at its early stage, in some aspects not as functional as existing package such as `datenumber`, but should evolve through time.

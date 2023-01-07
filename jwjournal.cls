@@ -12,7 +12,7 @@
 \NeedsTeXFormat{LaTeX2e}[2022-06-01]
 \ProvidesExplClass
   {jwjournal}
-  {2023/01/05a} {}
+  {2023/01/07} {}
   {JW's journal class}
 
 \keys_define:nn { jwjournal }
@@ -128,18 +128,10 @@
     \seq_map_inline:Nn \l_jwjournal_tmp_seq
       {
         \tl_set:Nn \l_tmpa_tl { ❄️ ##1 }
-        \regex_match:nVT { ❄️ === (.*) } \l_tmpa_tl
-          {
-            \tl_gput_right:Nn \g_jwjournal_content_tl
-              {
-                \end { jwjournal }
-                \begin { jwjournal }
-              }
-            \regex_replace_once:nnN
-              { ❄️ === (.*) }
-              { ❄️ \1 }
-              \l_tmpa_tl
-          }
+        \regex_replace_all:nnN
+          { ={3,} }
+          { }
+          \l_tmpa_tl
         \regex_match:nVT { ❄️ +++ (.*) } \l_tmpa_tl
           {
             \tl_gput_right:Nn \g_jwjournal_content_tl { \g_jwjournal_enlarge_page_by_one_line_tl }
