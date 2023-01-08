@@ -12,7 +12,7 @@
 \NeedsTeXFormat{LaTeX2e}[2022-06-01]
 \ProvidesExplClass
   {jwjournal}
-  {2023/01/07} {}
+  {2023/01/08} {}
   {JW's journal class}
 
 \keys_define:nn { jwjournal }
@@ -68,7 +68,14 @@
       {
         \colorlet { jwjournal-entry-background } { paper }
       }
-    \begin{tcolorbox}[enhanced~jigsaw, breakable, enlarge~left~by=-3.5mm, width=\textwidth+3.5mm, colback=jwjournal-entry-background, boxrule=0pt, top=2pt, bottom=2pt, left=2.5mm, borderline~west={1.5mm}{0mm}{jwjournal-entry!90!main-text}, frame~hidden]
+    \begin{tcolorbox}[enhanced~jigsaw, breakable,
+      enlarge~left~by=-3.5mm, width=\textwidth+3.5mm,
+      colback=jwjournal-entry-background,
+      boxrule=0pt, top=2pt, bottom=2pt, left=2.5mm, right=
+        \bool_if:NTF \l__jwjournal_color_entry_bool
+          { 2mm }
+          { -1mm },
+      borderline~west={1.5mm}{0mm}{jwjournal-entry!90!main-text}, frame~hidden]
         \sffamily \bfseries
         \bool_if:NT \l__jwjournal_color_entry_bool
           {
