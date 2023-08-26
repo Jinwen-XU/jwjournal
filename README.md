@@ -50,20 +50,27 @@ The options are:
 
 And there are only two major syntaxes for the main text:
 1) Title
-    - Any line begins with date like `2023-01-01` would be regard as the Title line.
+    - Any line begins with date like `2023-01-01` would be regard as the *Title* line.
     - You may write the weather and/or location after the date.
     - Example:
       ```
       2023-01-01 Sunny --- Apartment
       ```
 2) Note
-    - Any line begins with something like `[Note]` would be regard as the Note line.
+    - Any line begins with something like `[Note]` would be regard as the *Note* line.
     - Example:
       ```
       [Note] In hindsight, it was the right decision.
       ```
+      The space(s) between `[Note]` and the text following it would be ignored.
+    > You may also use `【` and `】`, which is especially useful when writing Chinese.
 
 With a few more for icing on the cake:
+- `|`: The first vertical bar would be interpreted as `\hfill`. This allows you to write the title line as
+  ```
+  2023-01-01 Sunny | Botanical Garden
+  ```
+  and then the address `Botanical Garden` would be printed at the end of the title line.
 - `+++`: If a single sentence or a few words fall to the next page, you may write a `+++` before that entry to enlarge the current page by one line.
 - `===`: Three or more equal signs `=` would simply be ignored. This is for improving the readability of the code, allowing you to write your journal like:
   ```
@@ -124,6 +131,7 @@ The colors from Monday to Sunday have the internal names `jwjournal-color-1`, ..
 
 ### Functionality
 The main features are achieved with the power of LaTeX3's regex functionality. It scans the content paragraph by paragraph and converts recognized patterns into corresponding TeX commands. Thus, `2023-01-01 Weather` becomes `\JWJournalEntry{2023-01-01}{Weather}`, `[Note] ...` becomes `\item[Note] ...` inside a `description` environment, and `+++` is essentially `\enlargethispage*{\baselineskip}`, etc. However, this comes with a price: in order to scan the content, it is firstly stored in a macro `\g_jwjournal_content_tl`, and that means that you cannot use commands like `\verb` in your main text (unless explicitly `\end{jwjournal}`, write your code, and then `\begin{jwjournal}`).
+Also, synctex won't work properly.
 
 ### Dates
 The conversion of date string to natural language, and the calculation of the day of the week are accomplished by `projlib-date`, part of the `ProjLib` toolkit, which is still at its early stage, in some aspects not as functional as existing package such as `datenumber`, but should evolve through time.
