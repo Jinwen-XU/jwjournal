@@ -12,7 +12,7 @@
 \NeedsTeXFormat{LaTeX2e}[2022-06-01]
 \ProvidesExplClass
   {jwjournal}
-  {2023/08/26} {}
+  {2023/08/27} {}
   {JW's journal class}
 
 \keys_define:nn { jwjournal }
@@ -126,7 +126,9 @@
   }
   {}
 
+\bool_new:N \l_jwjournal_regex_no_more_match_bool
 \seq_new:N \l_jwjournal_tmp_seq
+\tl_new:N \l_jwjournal_tmp_tl
 \cs_generate_variant:Nn \regex_split:nnN { nVN }
 \cs_new:Nn \jwjournal_parse_content:N
   {
@@ -134,49 +136,56 @@
     \tl_set:Nn \g_jwjournal_content_tl {}
     \seq_map_inline:Nn \l_jwjournal_tmp_seq
       {
-        \tl_set:Nn \l_tmpa_tl { ❄️ ##1 }
+        \tl_set:Nn \l_jwjournal_tmp_tl { ❄️ ##1 }
         \regex_replace_all:nnN
           { ={3,} }
           { }
-          \l_tmpa_tl
+          \l_jwjournal_tmp_tl
         \regex_replace_once:nnN
           { \| }
           { \c{hfill} }
-          \l_tmpa_tl
-        \regex_match:nVT { ❄️ +++ (.*) } \l_tmpa_tl
+          \l_jwjournal_tmp_tl
+        \bool_set_false:N \l_jwjournal_regex_no_more_match_bool
+        \bool_do_until:nn \l_jwjournal_regex_no_more_match_bool
           {
-            \tl_gput_right:Nn \g_jwjournal_content_tl { \g_jwjournal_enlarge_page_by_one_line_tl }
-            \regex_replace_once:nnN
-              { ❄️ +++ (.*) }
-              { ❄️ \1 }
-              \l_tmpa_tl
+            \regex_match:nVTF { ❄️ \ *? \+{3} } \l_jwjournal_tmp_tl
+              {
+                \tl_gput_right:Nn \g_jwjournal_content_tl { \g_jwjournal_enlarge_page_by_one_line_tl }
+                \regex_replace_once:nnN
+                  { ❄️ \ *? \+{3} (.*) }
+                  { ❄️ \1 }
+                  \l_jwjournal_tmp_tl
+              }
+              {
+                \bool_set_true:N \l_jwjournal_regex_no_more_match_bool
+              }
           }
         \regex_replace_once:nnN
           { ❄️ (\ *)? (\d{4}-\d{1,2}-\d{1,2}) (\ *)? (.*) }
           { \c{JWJournalEntry} {\2} {\4} }
-          \l_tmpa_tl
+          \l_jwjournal_tmp_tl
         \regex_replace_once:nnN
           { ❄️ (\ *)? (\d{1,2}-\d{1,2}-\d{4}) (\ *)? (.*) }
           { \c{JWJournalEntry} {\2} {\4} }
-          \l_tmpa_tl
+          \l_jwjournal_tmp_tl
         \regex_replace_once:nnN
           { ❄️ (\ *)? (\d{4} \D \d{1,2} \D \d{1,2}) (\ *)? (.*) }
           { \c{JWJournalEntry} {\2} {\4} }
-          \l_tmpa_tl
+          \l_jwjournal_tmp_tl
         \regex_replace_once:nnN
           { ❄️ (\ *)? (\d{1,2} \D \d{1,2} \D \d{4}) (\ *)? (.*) }
           { \c{JWJournalEntry} {\2} {\4} }
-          \l_tmpa_tl
+          \l_jwjournal_tmp_tl
         \regex_replace_once:nnN
-          { ❄️ (\[.*\] .*) }
+          { ❄️ \ *? (\[.*\] .*) }
           { \c{JWJournalItem} {\1} }
-          \l_tmpa_tl
+          \l_jwjournal_tmp_tl
         \regex_replace_once:nnN
-          { ❄️ 【(.*)】(.*) }
+          { ❄️ \ *? 【(.*)】(.*) }
           { \c{JWJournalItem} { \[\1\] \2 } }
-          \l_tmpa_tl
-        \regex_replace_once:nnN { ❄️ } { } \l_tmpa_tl
-        \tl_gput_right:NV \g_jwjournal_content_tl \l_tmpa_tl
+          \l_jwjournal_tmp_tl
+        \regex_replace_once:nnN { ❄️ } { } \l_jwjournal_tmp_tl
+        \tl_gput_right:NV \g_jwjournal_content_tl \l_jwjournal_tmp_tl
         \tl_gput_right:Nn \g_jwjournal_content_tl { \par }
       }
   }
@@ -212,7 +221,7 @@
       }
   }
   {
-    \tl_const:Nn \g_jwjournal_enlarge_page_by_one_line_tl { \enlargethispage*{\baselineskip} }
+    \tl_const:Nn \g_jwjournal_enlarge_page_by_one_line_tl { \enlargethispage{\baselineskip} }
     \geometry{
       papersize={7in,10in},
       top=.75in,bottom=.75in,
