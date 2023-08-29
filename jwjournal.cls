@@ -12,7 +12,7 @@
 \NeedsTeXFormat{LaTeX2e}[2022-06-01]
 \ProvidesExplClass
   {jwjournal}
-  {2023/08/27} {}
+  {2023/08/29} {}
   {JW's journal class}
 
 \keys_define:nn { jwjournal }
@@ -54,6 +54,8 @@
 \colorlet { jwjournal-color-5 } { yellow!40!cyan   }
 \colorlet { jwjournal-color-6 } { yellow!20!orange }
 \colorlet { jwjournal-color-7 } { red!20!orange    }
+
+\colorlet { jwjournal-entry } { . }
 
 \NewDocumentCommand \JWJournalEntry { m m }
   {
@@ -98,7 +100,7 @@
   }
 
 \RequirePackage { enumitem }
-\setlist [ description ] { font = \normalfont\sffamily, leftmargin = 3em}
+\setlist [ description ] { font = \normalfont\sffamily, leftmargin = 3em, topsep = 0pt }
 \RenewDocumentCommand \descriptionlabel { m }
   {
     \skip_horizontal:n { \labelsep }
@@ -117,6 +119,54 @@
     \end{description}
   }
 
+\NewDocumentCommand \JWJournalSkip { O{.5} }
+  {
+    % \vspace{#1\baselineskip}
+    \vskip#1\baselineskip
+  }
+\NewDocumentCommand \JWJournalBack { O{.5} }
+  {
+    % \vspace{-#1\baselineskip}
+    \vskip-#1\baselineskip
+  }
+
+\newenvironment{JWJournalCompactCenter}
+  {\parskip=0pt\par\nopagebreak\centering}
+  {\par\noindent\ignorespacesafterend}
+\newenvironment{JWJournalCenter}
+  {\parskip=0pt\par\medskip\nopagebreak\centering}
+  {\par\noindent\ignorespacesafterend}
+\newenvironment{JWJournalLeft}
+  {\parskip=0pt\par\medskip\nopagebreak\raggedright}
+  {\par\noindent\ignorespacesafterend}
+\newenvironment{JWJournalRight}
+  {\parskip=0pt\par\medskip\nopagebreak\raggedleft}
+  {\par\noindent\ignorespacesafterend}
+\NewDocumentCommand \JWJournalCompactCenterText { m }
+  {
+    \begin{JWJournalCompactCenter}
+      #1
+    \end{JWJournalCompactCenter}
+  }
+\NewDocumentCommand \JWJournalShowImageCenter { O{1} m }
+  {
+    \begin{JWJournalCenter}
+      \includegraphics[width=#1\linewidth]{#2}
+    \end{JWJournalCenter}
+  }
+\NewDocumentCommand \JWJournalShowImageLeft { O{1} m }
+  {
+    \begin{JWJournalLeft}
+      \includegraphics[width=#1\linewidth]{#2}
+    \end{JWJournalLeft}
+  }
+\NewDocumentCommand \JWJournalShowImageRight { O{1} m }
+  {
+    \begin{JWJournalRight}
+      \includegraphics[width=#1\linewidth]{#2}
+    \end{JWJournalRight}
+  }
+
 \tl_new:N \g_jwjournal_content_tl
 \NewDocumentEnvironment { jwjournal } { +b }
   {
@@ -126,6 +176,7 @@
   }
   {}
 
+\tl_const:Nn \c_jwjournal_new_line_with_skip_tl { \\[.3\baselineskip] }
 \bool_new:N \l_jwjournal_regex_no_more_match_bool
 \seq_new:N \l_jwjournal_tmp_seq
 \tl_new:N \l_jwjournal_tmp_tl
@@ -137,20 +188,60 @@
     \seq_map_inline:Nn \l_jwjournal_tmp_seq
       {
         \tl_set:Nn \l_jwjournal_tmp_tl { ❄️ ##1 }
+
         \regex_replace_all:nnN
           { ={3,} }
           { }
+          \l_jwjournal_tmp_tl
+        \regex_replace_all:nnN
+          { -> }
+          { \c{JWJournalSkip} }
+          \l_jwjournal_tmp_tl
+        \regex_replace_all:nnN
+          { <- }
+          { \c{JWJournalBack} }
+          \l_jwjournal_tmp_tl
+        \regex_replace_all:nnN
+          { \|\| }
+          { \c{JWJournalShowImageCenter} }
+          \l_jwjournal_tmp_tl
+        \regex_replace_all:nnN
+          { \(\( }
+          { \c{JWJournalShowImageLeft} }
+          \l_jwjournal_tmp_tl
+        \regex_replace_all:nnN
+          { \)\) }
+          { \c{JWJournalShowImageRight} }
           \l_jwjournal_tmp_tl
         \regex_replace_once:nnN
           { \| }
           { \c{hfill} }
           \l_jwjournal_tmp_tl
+        \regex_replace_all:nnN
+          { // }
+          { \c{c_jwjournal_new_line_with_skip_tl} }
+          \l_jwjournal_tmp_tl
+
+        % \regex_replace_all:nnN
+        %   { >> (.*) }
+        %   { \c{JWJournalCompactCenterText}\{\1\} }
+        %   \l_jwjournal_tmp_tl
+        \exp_args:Nno \regex_split:nnN { >> } { \l_jwjournal_tmp_tl } \l_tmpa_seq
+        \seq_pop_left:NN \l_tmpa_seq \l_tmpa_tl
+        \tl_clear:N \l_jwjournal_tmp_tl
+        \tl_put_right:NV \l_jwjournal_tmp_tl \l_tmpa_tl
+        \seq_map_inline:Nn \l_tmpa_seq
+          {
+            \tl_put_right:Nn \l_jwjournal_tmp_tl
+              { \JWJournalCompactCenterText { ####1 } }
+          }
+
         \bool_set_false:N \l_jwjournal_regex_no_more_match_bool
         \bool_do_until:nn \l_jwjournal_regex_no_more_match_bool
           {
             \regex_match:nVTF { ❄️ \ *? \+{3} } \l_jwjournal_tmp_tl
               {
-                \tl_gput_right:Nn \g_jwjournal_content_tl { \g_jwjournal_enlarge_page_by_one_line_tl }
+                \tl_gput_right:Nn \g_jwjournal_content_tl { \c_jwjournal_enlarge_page_by_one_line_tl }
                 \regex_replace_once:nnN
                   { ❄️ \ *? \+{3} (.*) }
                   { ❄️ \1 }
@@ -160,6 +251,7 @@
                 \bool_set_true:N \l_jwjournal_regex_no_more_match_bool
               }
           }
+
         \regex_replace_once:nnN
           { ❄️ (\ *)? (\d{4}-\d{1,2}-\d{1,2}) (\ *)? (.*) }
           { \c{JWJournalEntry} {\2} {\4} }
@@ -176,6 +268,7 @@
           { ❄️ (\ *)? (\d{1,2} \D \d{1,2} \D \d{4}) (\ *)? (.*) }
           { \c{JWJournalEntry} {\2} {\4} }
           \l_jwjournal_tmp_tl
+
         \regex_replace_once:nnN
           { ❄️ \ *? (\[.*\] .*) }
           { \c{JWJournalItem} {\1} }
@@ -184,7 +277,9 @@
           { ❄️ \ *? 【(.*)】(.*) }
           { \c{JWJournalItem} { \[\1\] \2 } }
           \l_jwjournal_tmp_tl
+
         \regex_replace_once:nnN { ❄️ } { } \l_jwjournal_tmp_tl
+
         \tl_gput_right:NV \g_jwjournal_content_tl \l_jwjournal_tmp_tl
         \tl_gput_right:Nn \g_jwjournal_content_tl { \par }
       }
@@ -192,7 +287,7 @@
 
 \bool_if:NTF \l__jwjournal_scroll_bool
   {
-    \tl_const:Nn \g_jwjournal_enlarge_page_by_one_line_tl {}
+    \tl_const:Nn \c_jwjournal_enlarge_page_by_one_line_tl {}
     \geometry{
       papersize={7in,\maxdimen},
       top=.75in,bottom=.75in,
@@ -221,7 +316,7 @@
       }
   }
   {
-    \tl_const:Nn \g_jwjournal_enlarge_page_by_one_line_tl { \enlargethispage{\baselineskip} }
+    \tl_const:Nn \c_jwjournal_enlarge_page_by_one_line_tl { \enlargethispage{\baselineskip} }
     \geometry{
       papersize={7in,10in},
       top=.75in,bottom=.75in,
