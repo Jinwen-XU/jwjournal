@@ -9,7 +9,7 @@ A typical journal entry produced by `jwjournal` looks like this:
 
 Codewise, it is as simple as below:
 ```
-2023-01-01 Sunny --- Botanical Garden
+2023-01-01 Sunny | Botanical Garden
 
   Today I visited the botanical garden!
 
@@ -23,7 +23,7 @@ Codewise, it is as simple as below:
 Every day of the week has its unique color, like this:
 ![image](https://github.com/Jinwen-XU/jwjournal/raw/main/screenshots/demo2.png)
 
-By the way, the conversion from plain date string like `2023-01-01` to natural language like `January 1, 2023 | Sunday` is done automatically by `jwjournal` and has multilingual support. Thus, for example (via `\UseLanguage`):
+By the way, the conversion from plain date string like `2023-01-01` to natural language like `January 1, 2023 ⬦ Sunday` is done by `jwjournal` automatically and has multilingual support. Thus, for example (via `\UseLanguage`):
 - Chinese: ![image](https://github.com/Jinwen-XU/jwjournal/raw/main/screenshots/demo3-cn.png)
 - French: ![image](https://github.com/Jinwen-XU/jwjournal/raw/main/screenshots/demo3-fr.png)
 - German: ![image](https://github.com/Jinwen-XU/jwjournal/raw/main/screenshots/demo3-de.png)
@@ -48,7 +48,7 @@ The options are:
 - `color entry` adds more color to the title of each entry
 - `scroll` turns on the scroll mode and can generate a single-page pdf similar to a long screenshot
 
-And there are only two major syntaxes for the main text:
+And there are only three major syntaxes for the main text:
 1) Title
     - Any line begins with date like `2023-01-01` would be regard as the *Title* line.
     - You may write the weather and/or location after the date.
@@ -64,6 +64,11 @@ And there are only two major syntaxes for the main text:
       ```
       The space(s) between `[Note]` and the text following it would be ignored.
     > You may also use `【` and `】`, which is especially useful when writing Chinese.
+3) Displayed images can be included via one of the following ways:
+    - `|| [<width>] {<image file name>}`: show image in the middle.
+    - `(( [<width>] {<image file name>}`: show image on the left.
+    - `)) [<width>] {<image file name>}`: show image on the right.
+    > The `[<width>]` is optional. Here `<width>` is a number like `0.75`, the unit is `\linewidth`. When `[<width>]` is not given, the width would be full `\linewidth`.
 
 With a few more for icing on the cake:
 - `|`: The first vertical bar would be interpreted as `\hfill`. This allows you to write the title line as
@@ -71,11 +76,33 @@ With a few more for icing on the cake:
   2023-01-01 Sunny | Botanical Garden
   ```
   and then the address `Botanical Garden` would be printed at the end of the title line.
+- `\\` and `//`: `\\` has its usual meaning in LaTeX for starting a new line, while `//` has been defined to be starting a new line with some vertical spacing. This allows you to write the annotations as:
+  ```
+  [Note] Some text.
+    //
+    More text.
+    //
+    (Some remark)
+    \\
+    (Another remark)
+    \\
+    (Final remark)
+  ```
+  As a result, all the text would be properly indented.
+  > Note that images specified via `||`, `((` or `))` already contain line breaks, thus you don't need to (actually, *you can't*) write `//` or `\\` around them.
+- `>>`: Text after `>>` would be centered. This is intended for writing annotations/captions for displayed images:
+  ```
+  || {image-name}
+  >> (Some remark)
+  >> (Another remark)
+  ```
+- `->` and `<-`: Skip or retrieve certain vertical space, by default half of `\baselineskip`. You may specify the exact spacing in the unit of `\baselineskip`: for example, `-> [0.3]` would be skipping `0.3\baselineskip`, while `<- [.75]` means retrieving `0.75\baselineskip`.
 - `+++`: If a single sentence or a few words fall to the next page, you may write a `+++` before that entry to enlarge the current page by one line.
+  > You may write this `+++` several times if necessary, but do make sure that the number of the `+` sign is a multiple of 3.
 - `===`: Three or more equal signs `=` would simply be ignored. This is for improving the readability of the code, allowing you to write your journal like:
   ```
-  2023-01-01 Sunny --- Botanical Garden
-  =====================================
+  2023-01-01 Sunny | Botanical Garden
+  ===================================
 
   Today I visited the botanical garden!
 
@@ -88,15 +115,15 @@ Indentations are not important, but paragraphs need to be separated by a blank l
 - with indentation:
   ```
   2023-01-01
-  Sunny
+  Sunny | Botanical Garden
 
     ......
     ......
   ```
 - with a separation line:
   ```
-  2023-01-01 Sunny
-  ================
+  2023-01-01 Sunny | Botanical Garden
+  ===================================
 
   ......
   ......
@@ -104,7 +131,7 @@ Indentations are not important, but paragraphs need to be separated by a blank l
 - or maybe even:
   ```
   ==========
-  2023-01-01    Sunny
+  2023-01-01    Sunny | Botanical Garden
   ==========
 
   ......
@@ -130,7 +157,7 @@ The colors from Monday to Sunday have the internal names `jwjournal-color-1`, ..
 ```
 
 ### Functionality
-The main features are achieved with the power of LaTeX3's regex functionality. It scans the content paragraph by paragraph and converts recognized patterns into corresponding TeX commands. Thus, `2023-01-01 Weather` becomes `\JWJournalEntry{2023-01-01}{Weather}`, `[Note] ...` becomes `\item[Note] ...` inside a `description` environment, and `+++` is essentially `\enlargethispage*{\baselineskip}`, etc. However, this comes with a price: in order to scan the content, it is firstly stored in a macro `\g_jwjournal_content_tl`, and that means that you cannot use commands like `\verb` in your main text (unless explicitly `\end{jwjournal}`, write your code, and then `\begin{jwjournal}`).
+The main features are achieved with the power of LaTeX3's regex functionality. It scans the content paragraph by paragraph and converts recognized patterns into corresponding TeX commands. Thus, `2023-01-01 Weather` becomes `\JWJournalEntry{2023-01-01}{Weather}`, `[Note] ...` becomes `\item[Note] ...` inside a `description` environment, and `+++` is essentially `\enlargethispage{\baselineskip}`, etc. However, this comes with a price: in order to scan the content, it is firstly stored in a macro `\g_jwjournal_content_tl`, and that means that you cannot use commands like `\verb` in your main text (unless explicitly `\end{jwjournal}`, write your code, and then `\begin{jwjournal}`).
 Also, synctex won't work properly.
 
 ### Dates

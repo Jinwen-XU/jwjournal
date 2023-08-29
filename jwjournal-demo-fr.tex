@@ -8,22 +8,47 @@
 \begin{document}
 
 
-01/01/2023 Ensoleillé | Appartement
+01/01/2023 Ensoleillé | Mon appartement
 
-  Les dates et annotations apparaissant dans le texte ne seront pas reconnues : 25/12/2022, [Note], alors n'hésitez pas à les écrire.
+  Les dates et annotations apparaissant dans le texte ne seront pas  détectées : 25/12/2022, [Note], alors n'hésitez pas à les écrire !
 
   [Sports] quelque chose sur les événements sportifs.
 
   [Apprendre] quelque chose sur l'apprentissage.
+
+  Les images peuvent être incluses via :
+
+  || [.4] {example-image-a}
+  >> (Remarque sur l'image)
+  >> (Plus de remarque...)
+
+  Vous pouvez également afficher l'image à gauche ou à droite :
+  (( [.4] {example-image-a}
+  -> [.3] % ajouter un certain espace vertical, ici c'est 0.3\baselineskip
+  )) [.4] {example-image-a}
 
 
 
 02/01/2023
 Inconnu (la météo peut aussi être écrite sur la deuxième ligne, selon votre préférence)
 
-  La couleur des étiquettes changera en fonction de la date.
+  La couleur des étiquettes changera en fonction de la date, et le texte long sera automatiquement indenté :
 
   [Note] Je n'ai pas étudié aujourd'hui, mais j'ai écrit beaucoup beaucoup beaucoup beaucoup beaucoup beaucoup beaucoup beaucoup beaucoup de code.
+
+  Si l'étiquette est suivie de plusieurs paragraphes, vous pouvez utiliser \texttt{\textbackslash\textbackslash} et \texttt{\slash\slash} judicieusement pour les concaténer, de manière à ce que tous les textes soient indentés convenablement :
+
+  [Étiquette] Un peu de texte.
+    //
+    Plus de texte (avec \texttt{\slash\slash}, ce qui permet d'avoir un espace vertical par rapport au texte ci-dessus).
+    //
+    Plus de texte (le même, avec un certain espace vertical par rapport au texte précédent).
+    //
+    (Quelque remarque)
+    \\
+    (Une autre remarque, due à l'utilisation de \texttt{\textbackslash\textbackslash}, est proche de la remarque ci-dessus)
+    \\
+    (Une autre remarque --- de même, est proche de la remarque ci-dessus)
 
 
 
@@ -39,9 +64,8 @@ Inconnu (la météo peut aussi être écrite sur la deuxième ligne, selon votre
 
 
 
-==========
 05-01-2023    Nuageux       --- Travail à domicile
-==========
+==================================================
 
 Vous pouvez également organiser votre code comme ceci.
 
@@ -50,7 +74,7 @@ Vous pouvez également organiser votre code comme ceci.
 06-01-2023    Ensoleillé    --- Travail à domicile
 ==========
 
-...
+Ou bien comme ceci...
 
 
 
