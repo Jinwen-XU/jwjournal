@@ -19,14 +19,14 @@
 
   图片这可以这样引入：
 
-  || [.4] {example-image-a}
+  || <.4> {example-image-a} % 或者 || {example-image-a} <.4>
   >> （图片的注释）
   >> （更多注释）
 
   也可以靠左或者靠右显示：
-  (( [.4] {example-image-a}
-  -> [.3] % 加入一点竖直间距，例如这里是 0.3\baselineskip
-  )) [.4] {example-image-a}
+  (( <.4> {example-image-a} % 或者 (( {example-image-a} <.4>
+  -> <.3> % 加入一点竖直间距，例如这里是 0.3\baselineskip
+  )) <.4> {example-image-a} % 或者 )) {example-image-a} <.4>
 
 
 

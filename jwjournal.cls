@@ -12,7 +12,7 @@
 \NeedsTeXFormat{LaTeX2e}[2022-06-01]
 \ProvidesExplClass
   {jwjournal}
-  {2023/08/29} {}
+  {2023/08/30} {}
   {JW's journal class}
 
 \keys_define:nn { jwjournal }
@@ -119,15 +119,17 @@
     \end{description}
   }
 
-\NewDocumentCommand \JWJournalSkip { O{.5} }
+\NewDocumentCommand \JWJournalSkip { D<>{.5} }
   {
     % \vspace{#1\baselineskip}
-    \vskip#1\baselineskip
+    % \vskip#1\baselineskip
+    \par\vspace{#1\baselineskip}
   }
-\NewDocumentCommand \JWJournalBack { O{.5} }
+\NewDocumentCommand \JWJournalBack { D<>{.5} }
   {
     % \vspace{-#1\baselineskip}
-    \vskip-#1\baselineskip
+    % \vskip-#1\baselineskip
+    \par\vspace{-#1\baselineskip}
   }
 
 \newenvironment{JWJournalCompactCenter}
@@ -148,22 +150,61 @@
       #1
     \end{JWJournalCompactCenter}
   }
-\NewDocumentCommand \JWJournalShowImageCenter { O{1} m }
+\NewDocumentCommand \JWJournalShowImageCenter { D<>{*} m D<>{*} }
   {
+    \str_if_eq:nnTF { #1 } { * }
+      {
+        \str_if_eq:nnTF { #3 } { * }
+          {
+            \tl_set:Nn \l_tmpa_tl { 1 }
+          }
+          {
+            \tl_set:Nn \l_tmpa_tl { #3 }
+          }
+      }
+      {
+        \tl_set:Nn \l_tmpa_tl { #1 }
+      }
     \begin{JWJournalCenter}
-      \includegraphics[width=#1\linewidth]{#2}
+      \includegraphics[width= \tl_use:N \l_tmpa_tl \linewidth]{#2}
     \end{JWJournalCenter}
   }
-\NewDocumentCommand \JWJournalShowImageLeft { O{1} m }
+\NewDocumentCommand \JWJournalShowImageLeft { D<>{*} m D<>{*} }
   {
+    \str_if_eq:nnTF { #1 } { * }
+      {
+        \str_if_eq:nnTF { #3 } { * }
+          {
+            \tl_set:Nn \l_tmpa_tl { 1 }
+          }
+          {
+            \tl_set:Nn \l_tmpa_tl { #3 }
+          }
+      }
+      {
+        \tl_set:Nn \l_tmpa_tl { #1 }
+      }
     \begin{JWJournalLeft}
-      \includegraphics[width=#1\linewidth]{#2}
+      \includegraphics[width= \tl_use:N \l_tmpa_tl \linewidth]{#2}
     \end{JWJournalLeft}
   }
-\NewDocumentCommand \JWJournalShowImageRight { O{1} m }
+\NewDocumentCommand \JWJournalShowImageRight { D<>{*} m D<>{*} }
   {
+    \str_if_eq:nnTF { #1 } { * }
+      {
+        \str_if_eq:nnTF { #3 } { * }
+          {
+            \tl_set:Nn \l_tmpa_tl { 1 }
+          }
+          {
+            \tl_set:Nn \l_tmpa_tl { #3 }
+          }
+      }
+      {
+        \tl_set:Nn \l_tmpa_tl { #1 }
+      }
     \begin{JWJournalRight}
-      \includegraphics[width=#1\linewidth]{#2}
+      \includegraphics[width= \tl_use:N \l_tmpa_tl \linewidth]{#2}
     \end{JWJournalRight}
   }
 
@@ -193,14 +234,66 @@
           { ={3,} }
           { }
           \l_jwjournal_tmp_tl
+
+        \regex_match:nVT { ❄️ \ *? -> } \l_jwjournal_tmp_tl
+          {
+            \regex_match:nVTF { ❄️ \ *? -> \ *? < [\+\-\ ]*(\d+|\d*\.\d+)\ * > } \l_jwjournal_tmp_tl
+              {
+                \exp_args:Nno \regex_extract_once:nnN
+                  { ❄️ \ *? -> \ *? < ([\+\-\ ]*(?:\d+|\d*\.\d+)\ *) > }
+                  { \l_jwjournal_tmp_tl }
+                  \l_tmpa_seq
+                \seq_pop_left:NN \l_tmpa_seq \l_tmpa_tl
+                \seq_pop_left:NN \l_tmpa_seq \l_tmpa_tl
+                \tl_gput_right:Nn \g_jwjournal_content_tl { \JWJournalSkip }
+                \tl_gput_right:Nx \g_jwjournal_content_tl { < \l_tmpa_tl > }
+                \regex_replace_once:nnN
+                  { ❄️ \ *? -> \ *? < (?:[\+\-\ ]*(?:\d+|\d*\.\d+)\ *) > (.*)  }
+                  { ❄️ \1 }
+                  \l_jwjournal_tmp_tl
+              }
+              {
+                \tl_gput_right:Nn \g_jwjournal_content_tl { \JWJournalSkip }
+                \regex_replace_once:nnN
+                  { ❄️ \ *? -> \ *? (.*)  }
+                  { ❄️ \1 }
+                  \l_jwjournal_tmp_tl
+              }
+          }
         \regex_replace_all:nnN
           { -> }
           { \c{JWJournalSkip} }
           \l_jwjournal_tmp_tl
+        \regex_match:nVT { ❄️ \ *? <- } \l_jwjournal_tmp_tl
+          {
+            \regex_match:nVTF { ❄️ \ *? <- \ *? < [\+\-\ ]*(\d+|\d*\.\d+)\ * > } \l_jwjournal_tmp_tl
+              {
+                \exp_args:Nno \regex_extract_once:nnN
+                  { ❄️ \ *? <- \ *? < ([\+\-\ ]*(?:\d+|\d*\.\d+)\ *) > }
+                  { \l_jwjournal_tmp_tl }
+                  \l_tmpa_seq
+                \seq_pop_left:NN \l_tmpa_seq \l_tmpa_tl
+                \seq_pop_left:NN \l_tmpa_seq \l_tmpa_tl
+                \tl_gput_right:Nn \g_jwjournal_content_tl { \JWJournalBack }
+                \tl_gput_right:Nx \g_jwjournal_content_tl { < \l_tmpa_tl > }
+                \regex_replace_once:nnN
+                  { ❄️ \ *? <- \ *? < (?:[\+\-\ ]*(?:\d+|\d*\.\d+)\ *) > (.*)  }
+                  { ❄️ \1 }
+                  \l_jwjournal_tmp_tl
+              }
+              {
+                \tl_gput_right:Nn \g_jwjournal_content_tl { \JWJournalBack }
+                \regex_replace_once:nnN
+                  { ❄️ \ *? <- \ *? (.*)  }
+                  { ❄️ \1 }
+                  \l_jwjournal_tmp_tl
+              }
+          }
         \regex_replace_all:nnN
           { <- }
           { \c{JWJournalBack} }
           \l_jwjournal_tmp_tl
+
         \regex_replace_all:nnN
           { \|\| }
           { \c{JWJournalShowImageCenter} }
@@ -213,6 +306,7 @@
           { \)\) }
           { \c{JWJournalShowImageRight} }
           \l_jwjournal_tmp_tl
+
         \regex_replace_once:nnN
           { \| }
           { \c{hfill} }
@@ -228,8 +322,7 @@
         %   \l_jwjournal_tmp_tl
         \exp_args:Nno \regex_split:nnN { >> } { \l_jwjournal_tmp_tl } \l_tmpa_seq
         \seq_pop_left:NN \l_tmpa_seq \l_tmpa_tl
-        \tl_clear:N \l_jwjournal_tmp_tl
-        \tl_put_right:NV \l_jwjournal_tmp_tl \l_tmpa_tl
+        \tl_set_eq:NN \l_jwjournal_tmp_tl \l_tmpa_tl
         \seq_map_inline:Nn \l_tmpa_seq
           {
             \tl_put_right:Nn \l_jwjournal_tmp_tl
