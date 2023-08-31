@@ -104,11 +104,10 @@
   }
 
 \RequirePackage { enumitem }
-\setlist [ description ] { font = \normalfont\sffamily, leftmargin = 3em, topsep = 0pt }
+\setlist [ description ] { font = \normalfont\sffamily, leftmargin = 3em, topsep = 0pt, labelsep = 1em }
 \RenewDocumentCommand \descriptionlabel { m }
   {
-    \skip_horizontal:n { \labelsep }
-    \makebox[\maxof{\width}{2.5em}]{
+    \makebox[\maxof{\width}{2em}][l]{
       \tcbox[enhanced~jigsaw, breakable, oversize,
       on~line, arc = .12em, outer~arc = .1em,
       colframe = jwjournal-entry, colupper=main-text, opacityback = 0,
@@ -338,6 +337,19 @@
         \regex_replace_all:nnN
           { // }
           { \c{c_jwjournal_new_line_with_skip_tl} }
+          \l_jwjournal_tmp_tl
+
+        \regex_replace_all:nnN
+          { \*\*\* (.*?) \*\*\* }
+          { \c{textbf}\{ \c{emph}\{ \1 \} \} }
+          \l_jwjournal_tmp_tl
+        \regex_replace_all:nnN
+          { \*\* (.*?) \*\* }
+          { \c{textbf}\{ \1 \} }
+          \l_jwjournal_tmp_tl
+        \regex_replace_all:nnN
+          { \* (.*?) \* }
+          { \c{emph}\{ \1 \} }
           \l_jwjournal_tmp_tl
 
         \regex_replace_once:nnN

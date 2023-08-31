@@ -13,7 +13,16 @@ Codewise, it is as simple as below:
 
   Today I visited the botanical garden!
 
-  [Food] And had ice-cream for lunch!
+  [Food] And had *ice cream* for lunch!
+
+  >>> This botanical garden has a history of nearly two hundred years, take a look at this photo:
+      || <0.40> {example-image}
+
+  (( <0.45> {example-image-a}
+  <- <5>
+  )) <0.50> {example-image-b}
+  <- <5>
+  (( <0.45> {example-image-c}
 ```
 
 > It is also possible to write the date as `2023/01/01`.
@@ -35,28 +44,34 @@ By the way, the conversion from plain date string like `2023-01-01` to natural l
 
 The structure of the document is very simple:
 ```latex
-\documentclass[11pt, paperstyle=light yellow, color entry]{jwjournal}
+\documentclass[11pt, paperstyle = light yellow, color entry]{jwjournal}
+\UseLanguage{⟨language⟩}
 \begin{document}
+
+
 
 % Your journal
 
+
+
 \end{document}
 ```
-The options are:
-- `month-day-year` or `day-month-year` for other date format
-- `paperstyle = ...` adjusts the paper color, options include: lightyellow、yellow、parchment、green、lightgray、gray、nord、dark...
-- `color entry` adds more color to the title of each entry
-- `scroll` turns on the scroll mode and can generate a single-page pdf similar to a long screenshot
+The available class options include:
+- `month-day-year` or `day-month-year` for using other date format;
+- `paperstyle = ...` adjusts the paper color, choices include: `light yellow`, `yellow`, `parchment`, `green`, `light gray`, `gray`, `nord`, `dark`...
+- `color entry` adds more color to the title of each entry;
+- `scroll` turns the scroll mode on, which generates a single-page pdf similar to a long screenshot.
 
-And there are only three major syntaxes for the main text:
+Here are the major syntaxes for your main text:
 1) Title
-    - Any line begins with date like `2023-01-01` would be regard as the *Title* line.
+    - Any line begins with date like `2023-01-01` or `2023/01/01` would be regard as the *Title* line.
     - You may write the weather and/or location after the date.
     - Example:
       ```
-      2023-01-01 Sunny --- Apartment
+      2023-01-01 Sunny | Apartment
       ```
-2) Note
+    > With the options `month-day-year` or `day-month-year`, you can also write date in the format `mm-dd-yyyy` or `dd-mm-yyyy`, respectively. You may refer to the English and French demo documents for examples.
+1) Note
     - Any line begins with something like `[Note]` would be regard as the *Note* line.
     - Example:
       ```
@@ -64,10 +79,17 @@ And there are only three major syntaxes for the main text:
       ```
       The space(s) between `[Note]` and the text following it would be ignored.
     > You may also use `【` and `】`, which is especially useful when writing Chinese.
-3) Displayed images can be included via one of the following ways:
-    - `|| <⟨width⟩> {⟨image file name⟩}` or `|| {⟨image file name⟩} <⟨width⟩>`: show image in the middle.
-    - `(( <⟨width⟩> {⟨image file name⟩}` or `(( {⟨image file name⟩} <⟨width⟩>`: show image on the left.
-    - `)) <⟨width⟩> {⟨image file name⟩}` or `)) {⟨image file name⟩} <⟨width⟩>`: show image on the right.
+1) Emphasis
+    - You may emphasize text as with Markdown:
+      - `*⟨text⟩*` is emphasizing;
+      - `**⟨text⟩**` is bolding;
+      - `***⟨text⟩***` is bolding and emphasizing.
+    - You may put text in a colored block via `>>>`, its usage is like the `>` in Markdown for blockquote.
+1) Image
+    - Displayed images can be included via one of the following ways:
+      - `|| <⟨width⟩> {⟨image file name⟩}` or `|| {⟨image file name⟩} <⟨width⟩>`: show image in the middle.
+      - `(( <⟨width⟩> {⟨image file name⟩}` or `(( {⟨image file name⟩} <⟨width⟩>`: show image on the left.
+      - `)) <⟨width⟩> {⟨image file name⟩}` or `)) {⟨image file name⟩} <⟨width⟩>`: show image on the right.
     > The `<⟨width⟩>` is optional. Here `⟨width⟩` is a number like `0.75`, the unit is `\linewidth`. When `<⟨width⟩>` is not given, the width would be full `\linewidth`.
 
 With a few more for icing on the cake:
@@ -110,6 +132,8 @@ With a few more for icing on the cake:
   ```
 
 > You may also refer to the demo documents to see their behaviors in action.
+
+> And don't forget that you are still using LaTeX! Thus if the provided syntax does not satisfy you, there are always LaTeX commands as a fallback.
 
 Indentations are not important, but paragraphs need to be separated by a blank line. For the sake of readability, it is recommended to organize your text as one of the following ways:
 - with indentation:
