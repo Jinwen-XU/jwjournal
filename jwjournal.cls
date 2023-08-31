@@ -12,7 +12,7 @@
 \NeedsTeXFormat{LaTeX2e}[2022-06-01]
 \ProvidesExplClass
   {jwjournal}
-  {2023/08/30} {}
+  {2023/08/31} {}
   {JW's journal class}
 
 \keys_define:nn { jwjournal }
@@ -57,6 +57,14 @@
 
 \colorlet { jwjournal-entry } { . }
 
+\NewDocumentCommand \JWJournalSeperator { O{jwjournal-entry!60!main-text} }
+  {
+    \enspace
+    \tikz [x=.75ex,y=.75ex,line~width=.2ex,line~join=round,baseline=-.3ex]
+      \draw [#1] (0,.5) -- (.5,1) -- (1,.5) -- (.5,0) -- (0,.5) -- cycle;
+    \enspace
+  }
+
 \NewDocumentCommand \JWJournalEntry { m m }
   {
     \skip_vertical:n { .5 \baselineskip }
@@ -70,7 +78,7 @@
       {
         \colorlet { jwjournal-entry-background } { paper }
       }
-    \begin{tcolorbox}[enhanced~jigsaw, breakable,
+    \begin{tcolorbox}[enhanced~jigsaw,
       enlarge~left~by=-3.5mm, width=\textwidth+3.5mm,
       colback=jwjournal-entry-background,
       boxrule=0pt, top=2pt, bottom=2pt, left=2.5mm, right=
@@ -84,15 +92,11 @@
             \color {jwjournal-entry!30!main-text}
           }
         \ProjLibDate {#1}
-        \enspace
-        \tikz [x=.75ex,y=.75ex,line~width=.2ex,line~join=round,baseline=-.3ex] \draw [jwjournal-entry!60!main-text] (0,.5) -- (.5,1) -- (1,.5) -- (.5,0) -- (0,.5) -- cycle;
-        \enspace
+        \JWJournalSeperator{}
         \projlib_datetime_display_week_uppercase:n { #1 }
         \tl_if_blank:eF { #2 }
           {
-            \enspace
-            \tikz [x=.75ex,y=.75ex,line~width=.2ex,line~join=round,baseline=-.3ex] \draw [jwjournal-entry!60!main-text] (0,.5) -- (.5,1) -- (1,.5) -- (.5,0) -- (0,.5) -- cycle;
-            \enspace
+            \JWJournalSeperator{}
             #2
           }
     \end{tcolorbox}
@@ -117,6 +121,26 @@
     \begin{description}
       \item #1
     \end{description}
+  }
+
+\NewDocumentCommand \JWJournalNote { m }
+  {
+    \bool_if:NTF \l__jwjournal_color_entry_bool
+      {
+        \colorlet { jwjournal-note-background } { jwjournal-entry!3!paper }
+      }
+      {
+        \colorlet { jwjournal-note-background } { paper }
+      }
+    \begin{tcolorbox}[enhanced~jigsaw, breakable,
+      colback=jwjournal-note-background,
+      boxrule=0pt, top=2pt, bottom=2pt, left=1em-1mm, right=
+        \bool_if:NTF \l__jwjournal_color_entry_bool
+          { 2mm }
+          { -1mm },
+      borderline~west={1mm}{0mm}{jwjournal-entry!90!main-text!60!paper}, frame~hidden]
+        #1
+    \end{tcolorbox}
   }
 
 \NewDocumentCommand \JWJournalSkip { D<>{.5} }
@@ -316,10 +340,23 @@
           { \c{c_jwjournal_new_line_with_skip_tl} }
           \l_jwjournal_tmp_tl
 
-        % \regex_replace_all:nnN
-        %   { >> (.*) }
-        %   { \c{JWJournalCompactCenterText}\{\1\} }
-        %   \l_jwjournal_tmp_tl
+        \regex_replace_once:nnN
+          { >>> \ *? (.*) }
+          { \c{JWJournalNote}\{\1\} }
+          \l_jwjournal_tmp_tl
+        \regex_replace_all:nnN
+          { \ *? >>> \ *? }
+          { }
+          \l_jwjournal_tmp_tl
+        % \exp_args:Nno \regex_split:nnN { >>> } { \l_jwjournal_tmp_tl } \l_tmpa_seq
+        % \seq_pop_left:NN \l_tmpa_seq \l_tmpa_tl
+        % \tl_set_eq:NN \l_jwjournal_tmp_tl \l_tmpa_tl
+        % \seq_map_inline:Nn \l_tmpa_seq
+        %   {
+        %     \tl_put_right:Nn \l_jwjournal_tmp_tl
+        %       { \JWJournalNote { ####1 } }
+        %   }
+
         \exp_args:Nno \regex_split:nnN { >> } { \l_jwjournal_tmp_tl } \l_tmpa_seq
         \seq_pop_left:NN \l_tmpa_seq \l_tmpa_tl
         \tl_set_eq:NN \l_jwjournal_tmp_tl \l_tmpa_tl
