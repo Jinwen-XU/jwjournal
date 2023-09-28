@@ -118,6 +118,19 @@ With a few more for icing on the cake:
   >> (Some remark)
   >> (Another remark)
   ```
+- `~~`: If you use `>>` or `>>>` inside a Note block (i.e. lines start with `[...]`), then there would no way to get out of the centered or boxed area and then continue the indented text; in such cases, you may start a new paragraph that start with `~~`, this will continue the indented text block:
+  ```
+  [Test] Here is some text.
+    || {some-image} <.4>
+    >> (Centered text)
+
+  ~~
+    Some more text.
+    >>> Text in color box.
+
+  ~~
+    And more text.
+  ```
 - `->` and `<-`: Skip or retrieve certain vertical space, by default half of `\baselineskip`. You may specify the exact spacing in the unit of `\baselineskip`: for example, `-> <0.3>` would be skipping `0.3\baselineskip`, while `<- <.75>` means retrieving `0.75\baselineskip`.
 - `+++`: If a single sentence or a few words fall to the next page, you may write a `+++` before that entry to enlarge the current page by one line.
   > You may write this `+++` several times if necessary, but do make sure that the number of the `+` sign is a multiple of 3.

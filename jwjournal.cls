@@ -12,7 +12,7 @@
 \NeedsTeXFormat{LaTeX2e}[2022-06-01]
 \ProvidesExplClass
   {jwjournal}
-  {2023/09/01} {}
+  {2023/09/28} {}
   {JW's journal class}
 
 \keys_define:nn { jwjournal }
@@ -105,6 +105,8 @@
 
 \RequirePackage { enumitem }
 \setlist [ description ] { font = \normalfont\sffamily, leftmargin = 3em, topsep = 0pt, labelsep = 1em }
+\newlist { jwjournal-continued-text } { itemize } { 1 }
+\setlist [ jwjournal-continued-text ] { leftmargin = 3em, topsep = 0pt, label = {} }
 \dim_new:N \l_jwjournal_labelsep_dim
 \dim_set:Nn \l_jwjournal_labelsep_dim { \labelsep }
 \setlist [ 2 ] { labelsep = \l_jwjournal_labelsep_dim, labelwidth = !}
@@ -123,6 +125,12 @@
     \begin{description}
       \item[#1] #2
     \end{description}
+  }
+\NewDocumentCommand \JWJournalContinue { m }
+  {
+    \begin{jwjournal-continued-text}
+      \item #1
+    \end{jwjournal-continued-text}
   }
 
 \NewDocumentCommand \JWJournalNote { m }
@@ -421,6 +429,11 @@
         \regex_replace_once:nnN
           { ❄️ \ *? 【(.*)】(.*) }
           { \c{JWJournalItem} {\1} {\2} }
+          \l_jwjournal_tmp_tl
+
+        \regex_replace_once:nnN
+          { ❄️ \ *? \~\~ \ *? (.*) }
+          { \c{JWJournalContinue} {\1} }
           \l_jwjournal_tmp_tl
 
         \regex_replace_once:nnN { ❄️ } { } \l_jwjournal_tmp_tl
