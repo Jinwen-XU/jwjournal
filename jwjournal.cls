@@ -346,7 +346,7 @@
           { \c{hfill} }
           \l_jwjournal_tmp_tl
         \regex_replace_all:nnN
-          { // }
+          { [^\:]// }
           { \c{c_jwjournal_new_line_with_skip_tl} }
           \l_jwjournal_tmp_tl
 
