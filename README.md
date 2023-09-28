@@ -181,6 +181,18 @@ Indentations are not important, but paragraphs need to be separated by a blank l
 - With pdfLaTeX, the base class is `minimart`.
 - With XeLaTeX or LuaLaTeX, the base class is `einfart`.
 
+### Regarding the fonts
+
+If you are using XeLaTeX or LuaLaTeX to compile your document, then the current document class requires the following open-source fonts that are not included in the standard TeX collection:
+
+- The Source Han font series at [Adobe Fonts](https://github.com/adobe-fonts). More specifically:
+  - Source Han Serif, [go to its Release page](https://github.com/adobe-fonts/source-han-serif/releases).
+  - Source Han Sans, [go to its Release page](https://github.com/adobe-fonts/source-han-sans/releases).
+  - Source Han Mono, [go to its Release page](https://github.com/adobe-fonts/source-han-mono/releases).
+  > It is recommended to download the Super-OTC version, so that the total download size would be smaller, and the installation would be easier.
+
+These are necessary if you wish to write your document in Chinese (either simplified or traditional) or Japanese. Also, without these fonts installed, the compilation speed might be much slower — the compilation would still passing, but the system shall spend (quite) some time verifying that the fonts are indeed missing before switching to the fallback fonts.
+
 ### Colors
 The colors from Monday to Sunday have the internal names `jwjournal-color-1`, ..., `jwjournal-color-7`. Currently they are defined as:
 ```latex
