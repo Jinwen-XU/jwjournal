@@ -12,7 +12,7 @@
 \NeedsTeXFormat{LaTeX2e}[2022-06-01]
 \ProvidesExplClass
   {jwjournal}
-  {2023/09/28} {}
+  {2023/10/01} {}
   {JW's journal class}
 
 \keys_define:nn { jwjournal }
@@ -67,6 +67,7 @@
 
 \NewDocumentCommand \JWJournalEntry { m m }
   {
+    \phantomsection
     \skip_vertical:n { .5 \baselineskip }
     \needspace { 2 \baselineskip }
     \projlib_datetime_calculate_week_according_to_format:n { #1 }
@@ -78,6 +79,7 @@
       {
         \colorlet { jwjournal-entry-background } { paper }
       }
+    \addcontentsline { toc } { section } { #1 }
     \begin{tcolorbox}[enhanced~jigsaw,
       enlarge~left~by=-3.5mm, width=\textwidth+3.5mm,
       colback=jwjournal-entry-background,
@@ -91,7 +93,7 @@
           {
             \color {jwjournal-entry!30!main-text}
           }
-        \ProjLibDate {#1}
+        \ProjLibDate { #1 }
         \JWJournalSeperator{}
         \projlib_datetime_display_week_uppercase:n { #1 }
         \tl_if_blank:eF { #2 }
