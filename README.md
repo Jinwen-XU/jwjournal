@@ -45,7 +45,7 @@ By the way, the conversion from plain date string like `2023-01-01` to natural l
 The structure of the document is very simple:
 ```latex
 \documentclass[11pt, paperstyle = light yellow, color entry]{jwjournal}
-\UseLanguage{⟨language⟩}
+\UseLanguage{⟨language⟩} % For English this line can be omitted.
 \begin{document}
 
 
@@ -91,17 +91,18 @@ Here are the major syntaxes for your main text:
       - `(( <⟨width⟩> {⟨image file name⟩}` or `(( {⟨image file name⟩} <⟨width⟩>`: show image on the left.
       - `)) <⟨width⟩> {⟨image file name⟩}` or `)) {⟨image file name⟩} <⟨width⟩>`: show image on the right.
     > The `<⟨width⟩>` is optional. Here `⟨width⟩` is a number like `0.75`, the unit is `\linewidth`. When `<⟨width⟩>` is not given, the width would be full `\linewidth`.
-1) Subfile
-    - You may include a subfile containing journal text in one of the following ways:
-      - `:: {⟨file name⟩}` for input, similarly as `\input`.
-      - `::: {⟨file name⟩}` for include, similarly as `\include`.
-    > Explicitly, these are `\InputJournal` and `\IncludeJournal`. If in the preamble you wish to define some automatic processing involving input or inclusion of subfiles, please use these two commands.
 1) Section
     - You may start a new
       - section, via `## {⟨section title⟩}`;
       - subsection, via `### {⟨subsection title⟩}`;
       - subsubsection, via `#### {⟨subsubsection title⟩}`.
-    > It is recommanded to use the class option `title in boldface`, `title in sffamily` and `use style = classical`. If you also wish your section title to be in small caps shape, then you may put the `⟨section title⟩` in `\textsc`.
+    > It is recommanded to use the class option `title in boldface`, `title in sffamily` and `use style = classical` (these options are provided by the base class of `jwjournal`). If you also wish your section title to be in small caps shape, then you may put the `⟨section title⟩` in `\textsc`.
+1) Subfile
+    - With this feature you may organize your journals in a systematic way by putting the fragments of it into subfiles distributed in separate folders. For example, you may have each folder's name to be the year, and within a folder you may have `.tex` files named after each month.
+    - You may include a subfile containing journal text in one of the following ways:
+      - `:: {⟨file name⟩}` for input, similarly as `\input`.
+      - `::: {⟨file name⟩}` for include, similarly as `\include`.
+    > Explicitly, these are `\InputJournal` and `\IncludeJournal`. If in the preamble you wish to define some automatic processing involving input or inclusion of subfiles, please use these two commands.
 
 With a few more for icing on the cake:
 - `|`: The first vertical bar would be interpreted as `\hfill`. This allows you to write the title line as
