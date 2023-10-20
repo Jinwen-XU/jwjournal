@@ -91,6 +91,17 @@ Here are the major syntaxes for your main text:
       - `(( <⟨width⟩> {⟨image file name⟩}` or `(( {⟨image file name⟩} <⟨width⟩>`: show image on the left.
       - `)) <⟨width⟩> {⟨image file name⟩}` or `)) {⟨image file name⟩} <⟨width⟩>`: show image on the right.
     > The `<⟨width⟩>` is optional. Here `⟨width⟩` is a number like `0.75`, the unit is `\linewidth`. When `<⟨width⟩>` is not given, the width would be full `\linewidth`.
+1) Subfile
+    - You may include a subfile containing journal text in one of the following ways:
+      - `:: {⟨file name⟩}` for input, similarly as `\input`.
+      - `::: {⟨file name⟩}` for include, similarly as `\include`.
+    > Explicitly, these are `\InputJournal` and `\IncludeJournal`. If in the preamble you wish to define some automatic processing involving input or inclusion of subfiles, please use these two commands.
+1) Section
+    - You may start a new
+      - section, via `## {⟨section title⟩}`;
+      - subsection, via `### {⟨subsection title⟩}`;
+      - subsubsection, via `#### {⟨subsubsection title⟩}`.
+    > It is recommanded to use the class option `title in boldface`, `title in sffamily` and `use style = classical`. If you also wish your section title to be in small caps shape, then you may put the `⟨section title⟩` in `\textsc`.
 
 With a few more for icing on the cake:
 - `|`: The first vertical bar would be interpreted as `\hfill`. This allows you to write the title line as

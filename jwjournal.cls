@@ -12,7 +12,7 @@
 \NeedsTeXFormat{LaTeX2e}[2022-06-01]
 \ProvidesExplClass
   {jwjournal}
-  {2023/10/01} {}
+  {2023/10/19} {}
   {JW's journal class}
 
 \keys_define:nn { jwjournal }
@@ -252,6 +252,23 @@
     \tl_use:N \g_jwjournal_content_tl
   }
   {}
+\NewDocumentCommand \jwjournaltext { +m }
+  {
+    \tl_gset:Nn \g_jwjournal_content_tl { #1 }
+    \jwjournal_parse_content:N \g_jwjournal_content_tl
+    \tl_use:N \g_jwjournal_content_tl
+  }
+\NewDocumentCommand \InputJournal { m }
+  {
+    \file_get:nnN { #1 } { } \l_tmpa_tl
+    \exp_args:No \jwjournaltext { \l_tmpa_tl }
+  }
+\NewDocumentCommand \IncludeJournal { m }
+  {
+    \clearpage
+    \InputJournal { #1 }
+    \clearpage
+  }
 
 \tl_const:Nn \c_jwjournal_new_line_with_skip_tl { \\[.3\baselineskip] }
 \bool_new:N \l_jwjournal_regex_no_more_match_bool
@@ -269,6 +286,28 @@
         \regex_replace_all:nnN
           { ={3,} }
           { }
+          \l_jwjournal_tmp_tl
+
+        \regex_replace_all:nnN
+          { ::: }
+          { \c{IncludeJournal} }
+          \l_jwjournal_tmp_tl
+        \regex_replace_all:nnN
+          { :: }
+          { \c{InputJournal} }
+          \l_jwjournal_tmp_tl
+
+        \regex_replace_all:nnN
+          { \#\#\#\# }
+          { \c{subsubsection} }
+          \l_jwjournal_tmp_tl
+        \regex_replace_all:nnN
+          { \#\#\# }
+          { \c{subsection} }
+          \l_jwjournal_tmp_tl
+        \regex_replace_all:nnN
+          { \#\# }
+          { \c{section} }
           \l_jwjournal_tmp_tl
 
         \regex_match:nVT { ❄️ \ *? -> } \l_jwjournal_tmp_tl
