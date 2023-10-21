@@ -83,7 +83,17 @@
     \begin{tcolorbox}[enhanced~jigsaw,
       enlarge~left~by=-3.5mm, width=\textwidth+3.5mm,
       colback=jwjournal-entry-background,
-      boxrule=0pt, top=2pt, bottom=2pt, left=2.5mm, right=
+      boxrule=0pt,
+      top=
+        \bool_if:NTF \l__jwjournal_color_entry_bool
+          { 2pt }
+          { 0pt },
+      bottom=
+        \bool_if:NTF \l__jwjournal_color_entry_bool
+          { 2pt }
+          { 0pt },
+      left=2.5mm,
+      right=
         \bool_if:NTF \l__jwjournal_color_entry_bool
           { 2mm }
           { -1mm },
@@ -289,25 +299,37 @@
           \l_jwjournal_tmp_tl
 
         \regex_replace_all:nnN
-          { ::: }
+          { \:\:\: }
           { \c{IncludeJournal} }
           \l_jwjournal_tmp_tl
         \regex_replace_all:nnN
-          { :: }
+          { \:\: }
           { \c{InputJournal} }
           \l_jwjournal_tmp_tl
 
         \regex_replace_all:nnN
-          { \#\#\#\# }
+          { \#\#\#\#\+ }
           { \c{subsubsection} }
           \l_jwjournal_tmp_tl
         \regex_replace_all:nnN
-          { \#\#\# }
+          { \#\#\#\+ }
           { \c{subsection} }
           \l_jwjournal_tmp_tl
         \regex_replace_all:nnN
-          { \#\# }
+          { \#\#\+ }
           { \c{section} }
+          \l_jwjournal_tmp_tl
+        \regex_replace_all:nnN
+          { \#\#\#\# }
+          { \c{subsubsection}\* }
+          \l_jwjournal_tmp_tl
+        \regex_replace_all:nnN
+          { \#\#\# }
+          { \c{subsection}\* }
+          \l_jwjournal_tmp_tl
+        \regex_replace_all:nnN
+          { \#\# }
+          { \c{section}\* }
           \l_jwjournal_tmp_tl
 
         \regex_match:nVT { ❄️ \ *? -> } \l_jwjournal_tmp_tl

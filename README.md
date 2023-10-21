@@ -92,11 +92,14 @@ Here are the major syntaxes for your main text:
       - `)) <⟨width⟩> {⟨image file name⟩}` or `)) {⟨image file name⟩} <⟨width⟩>`: show image on the right.
     > The `<⟨width⟩>` is optional. Here `⟨width⟩` is a number like `0.75`, the unit is `\linewidth`. When `<⟨width⟩>` is not given, the width would be full `\linewidth`.
 1) Section
-    - You may start a new
+    - You may start a new (*unnumbered*)
       - section, via `## {⟨section title⟩}`;
       - subsection, via `### {⟨subsection title⟩}`;
       - subsubsection, via `#### {⟨subsubsection title⟩}`.
+    - If you wish to use the *numbered* version, write `##+`, `###+` and `####+` instead.
     > It is recommanded to use the class option `title in boldface`, `title in sffamily` and `use style = classical` (these options are provided by the base class of `jwjournal`). If you also wish your section title to be in small caps shape, then you may put the `⟨section title⟩` in `\textsc`.
+
+    <!-- > Due to the current implementation of the emphasizing `*⟨text⟩*`, you cannot put two `##*`, `###*` or `####*` in the same paragraph — but this shouldn't be any problem, just put an empty line between any two sectional commands. -->
 1) Subfile
     - With this feature you may organize your journals in a systematic way by putting the fragments of it into subfiles distributed in separate folders. For example, you may have each folder's name to be the year, and within a folder you may have `.tex` files named after each month.
     - You may include a subfile containing journal text in one of the following ways:
