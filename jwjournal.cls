@@ -56,6 +56,7 @@
 \colorlet { jwjournal-color-7 } { red!20!orange    }
 
 \colorlet { jwjournal-entry } { . }
+\colorlet { jwjournal-sep-line } { .!27!paper }
 
 \NewDocumentCommand \JWJournalSeperator { O{jwjournal-entry!60!main-text} }
   {
@@ -63,6 +64,14 @@
     \tikz [x=.75ex,y=.75ex,line~width=.2ex,line~join=round,baseline=-.3ex]
       \draw [#1] (0,.5) -- (.5,1) -- (1,.5) -- (.5,0) -- (0,.5) -- cycle;
     \enspace
+  }
+
+\NewDocumentCommand \JWJournalSepLine { O{.75pt} }
+  {
+    \vspace*{-.5\baselineskip}
+    \noindent
+    \hspace*{-\paperwidth}
+    \makebox[\linewidth]{\color{jwjournal-sep-line}\rule{4\paperwidth}{#1}}
   }
 
 \NewDocumentCommand \JWJournalEntry { m m }
@@ -467,6 +476,16 @@
                 \bool_set_true:N \l_jwjournal_regex_no_more_match_bool
               }
           }
+
+        \tl_put_right:Nn \l_jwjournal_tmp_tl { ❄️ }
+        \regex_match:nVT { ❄️ \ *? \-{3,} \ *? ❄️ } \l_jwjournal_tmp_tl
+          {
+            \regex_replace_once:nnN
+              { ❄️ \ *? \-{3,} \ *? }
+              { ❄️ \c{JWJournalSepLine} }
+              \l_jwjournal_tmp_tl
+          }
+        \regex_replace_once:nnN { ❄️ (.*) ❄️ } { ❄️ \1 } \l_jwjournal_tmp_tl
 
         \regex_replace_once:nnN
           { ❄️ (\ *)? (\d{4}-\d{1,2}-\d{1,2}) (\ *)? (.*) }

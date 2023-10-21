@@ -147,6 +147,7 @@ With a few more for icing on the cake:
     And more text.
   ```
 - `->` and `<-`: Skip or retrieve certain vertical space, by default half of `\baselineskip`. You may specify the exact spacing in the unit of `\baselineskip`: for example, `-> <0.3>` would be skipping `0.3\baselineskip`, while `<- <.75>` means retrieving `0.75\baselineskip`.
+- `---`: Three or more hyphen chars `-` in a separate paragraph would be interpreted as a separation line (as with Markdown).
 - `+++`: If a single sentence or a few words fall to the next page, you may write a `+++` before that entry to enlarge the current page by one line.
   > You may write this `+++` several times if necessary, but do make sure that the number of the `+` sign is a multiple of 3.
 - `===`: Three or more equal signs `=` would simply be ignored. This is for improving the readability of the code, allowing you to write your journal like:
