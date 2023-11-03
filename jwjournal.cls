@@ -12,7 +12,7 @@
 \NeedsTeXFormat{LaTeX2e}[2022-06-01]
 \ProvidesExplClass
   {jwjournal}
-  {2023/10/19} {}
+  {2023/11/03} {}
   {JW's journal class}
 
 \keys_define:nn { jwjournal }
@@ -271,11 +271,12 @@
     \tl_use:N \g_jwjournal_content_tl
   }
   {}
+\tl_new:N \g_jwjournal_local_content_tl
 \NewDocumentCommand \jwjournaltext { +m }
   {
-    \tl_gset:Nn \g_jwjournal_content_tl { #1 }
-    \jwjournal_parse_content:N \g_jwjournal_content_tl
-    \tl_use:N \g_jwjournal_content_tl
+    \tl_gset:Nn \g_jwjournal_local_content_tl { #1 }
+    \jwjournal_parse_content:N \g_jwjournal_local_content_tl
+    \tl_use:N \g_jwjournal_local_content_tl
   }
 \NewDocumentCommand \InputJournal { m }
   {
@@ -297,7 +298,7 @@
 \cs_new:Nn \jwjournal_parse_content:N
   {
     \regex_split:nVN { \c{par} } #1 \l_jwjournal_tmp_seq
-    \tl_set:Nn \g_jwjournal_content_tl {}
+    \tl_gclear:N #1
     \seq_map_inline:Nn \l_jwjournal_tmp_seq
       {
         \tl_set:Nn \l_jwjournal_tmp_tl { ❄️ ##1 }
@@ -351,15 +352,15 @@
                   \l_tmpa_seq
                 \seq_pop_left:NN \l_tmpa_seq \l_tmpa_tl
                 \seq_pop_left:NN \l_tmpa_seq \l_tmpa_tl
-                \tl_gput_right:Nn \g_jwjournal_content_tl { \JWJournalSkip }
-                \tl_gput_right:Nx \g_jwjournal_content_tl { < \l_tmpa_tl > }
+                \tl_gput_right:Nn #1 { \JWJournalSkip }
+                \tl_gput_right:Nx #1 { < \l_tmpa_tl > }
                 \regex_replace_once:nnN
                   { ❄️ \ *? -> \ *? < (?:[\+\-\ ]*(?:\d+|\d*\.\d+)\ *) > (.*)  }
                   { ❄️ \1 }
                   \l_jwjournal_tmp_tl
               }
               {
-                \tl_gput_right:Nn \g_jwjournal_content_tl { \JWJournalSkip }
+                \tl_gput_right:Nn #1 { \JWJournalSkip }
                 \regex_replace_once:nnN
                   { ❄️ \ *? -> \ *? (.*)  }
                   { ❄️ \1 }
@@ -380,15 +381,15 @@
                   \l_tmpa_seq
                 \seq_pop_left:NN \l_tmpa_seq \l_tmpa_tl
                 \seq_pop_left:NN \l_tmpa_seq \l_tmpa_tl
-                \tl_gput_right:Nn \g_jwjournal_content_tl { \JWJournalBack }
-                \tl_gput_right:Nx \g_jwjournal_content_tl { < \l_tmpa_tl > }
+                \tl_gput_right:Nn #1 { \JWJournalBack }
+                \tl_gput_right:Nx #1 { < \l_tmpa_tl > }
                 \regex_replace_once:nnN
                   { ❄️ \ *? <- \ *? < (?:[\+\-\ ]*(?:\d+|\d*\.\d+)\ *) > (.*)  }
                   { ❄️ \1 }
                   \l_jwjournal_tmp_tl
               }
               {
-                \tl_gput_right:Nn \g_jwjournal_content_tl { \JWJournalBack }
+                \tl_gput_right:Nn #1 { \JWJournalBack }
                 \regex_replace_once:nnN
                   { ❄️ \ *? <- \ *? (.*)  }
                   { ❄️ \1 }
@@ -466,7 +467,7 @@
           {
             \regex_match:nVTF { ❄️ \ *? \+{3} } \l_jwjournal_tmp_tl
               {
-                \tl_gput_right:Nn \g_jwjournal_content_tl { \c_jwjournal_enlarge_page_by_one_line_tl }
+                \tl_gput_right:Nn #1 { \c_jwjournal_enlarge_page_by_one_line_tl }
                 \regex_replace_once:nnN
                   { ❄️ \ *? \+{3} (.*) }
                   { ❄️ \1 }
@@ -520,8 +521,8 @@
 
         \regex_replace_once:nnN { ❄️ } { } \l_jwjournal_tmp_tl
 
-        \tl_gput_right:NV \g_jwjournal_content_tl \l_jwjournal_tmp_tl
-        \tl_gput_right:Nn \g_jwjournal_content_tl { \par }
+        \tl_gput_right:NV #1 \l_jwjournal_tmp_tl
+        \tl_gput_right:Nn #1 { \par }
       }
   }
 
