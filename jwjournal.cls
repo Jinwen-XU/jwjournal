@@ -506,11 +506,11 @@
           \l_jwjournal_tmp_tl
 
         \regex_replace_once:nnN
-          { ❄️ \ *? \[(.*)\] (.*) }
+          { ❄️ \ *? \[(.*?)\] (.*) }
           { \c{JWJournalItem} {\1} {\2} }
           \l_jwjournal_tmp_tl
         \regex_replace_once:nnN
-          { ❄️ \ *? 【(.*)】(.*) }
+          { ❄️ \ *? 【(.*?)】(.*) }
           { \c{JWJournalItem} {\1} {\2} }
           \l_jwjournal_tmp_tl
 
