@@ -12,7 +12,7 @@
 \NeedsTeXFormat{LaTeX2e}[2022-06-01]
 \ProvidesExplClass
   {jwjournal}
-  {2023/11/03} {}
+  {2023/12/19} {}
   {JW's journal class}
 
 \keys_define:nn { jwjournal }
@@ -295,6 +295,26 @@
 \seq_new:N \l_jwjournal_tmp_seq
 \tl_new:N \l_jwjournal_tmp_tl
 \cs_generate_variant:Nn \regex_split:nnN { nVN }
+\cs_new:Nn \jwjournal_regex_replace_case_once_skip_math:nN
+  {
+    \regex_replace_case_once:nN
+      {
+        { \$ (.*?) \$ } { \0 }
+        { \c{\(} (.*?) \c{\)} } { \0 }
+        { \c{\[} (.*?) \c{\]} } { \0 }
+        #1
+      } #2
+  }
+\cs_new:Nn \jwjournal_regex_replace_case_all_skip_math:nN
+  {
+    \regex_replace_case_all:nN
+      {
+        { \$ (.*?) \$ } { \0 }
+        { \c{\(} (.*?) \c{\)} } { \0 }
+        { \c{\[} (.*?) \c{\]} } { \0 }
+        #1
+      } #2
+  }
 \cs_new:Nn \jwjournal_parse_content:N
   {
     \regex_split:nVN { \c{par} } #1 \l_jwjournal_tmp_seq
@@ -401,40 +421,57 @@
           { \c{JWJournalBack} }
           \l_jwjournal_tmp_tl
 
-        \regex_replace_all:nnN
-          { \|\| }
-          { \c{JWJournalShowImageCenter} }
-          \l_jwjournal_tmp_tl
-        \regex_replace_all:nnN
-          { \(\( }
-          { \c{JWJournalShowImageLeft} }
-          \l_jwjournal_tmp_tl
-        \regex_replace_all:nnN
-          { \)\) }
-          { \c{JWJournalShowImageRight} }
-          \l_jwjournal_tmp_tl
+        % \regex_replace_all:nnN
+        %   { \|\| }
+        %   { \c{JWJournalShowImageCenter} }
+        %   \l_jwjournal_tmp_tl
+        % \regex_replace_all:nnN
+        %   { \(\( }
+        %   { \c{JWJournalShowImageLeft} }
+        %   \l_jwjournal_tmp_tl
+        % \regex_replace_all:nnN
+        %   { \)\) }
+        %   { \c{JWJournalShowImageRight} }
+        %   \l_jwjournal_tmp_tl
+        \jwjournal_regex_replace_case_all_skip_math:nN
+          {
+            { \|\| } { \c{JWJournalShowImageCenter} }
+            { \(\( } { \c{JWJournalShowImageLeft} }
+            { \)\) } { \c{JWJournalShowImageRight} }
+          } \l_jwjournal_tmp_tl
 
-        \regex_replace_once:nnN
-          { \| }
-          { \c{hfill} }
-          \l_jwjournal_tmp_tl
+        % \regex_replace_once:nnN
+        %   { \| }
+        %   { \c{hfill} }
+        %   \l_jwjournal_tmp_tl
+        \jwjournal_regex_replace_case_once_skip_math:nN
+          {
+            { \| } { \c{hfill} }
+          } \l_jwjournal_tmp_tl
+
         \regex_replace_all:nnN
           { [^\:]// }
           { \c{c_jwjournal_new_line_with_skip_tl} }
           \l_jwjournal_tmp_tl
 
-        \regex_replace_all:nnN
-          { \*\*\* (.*?) \*\*\* }
-          { \c{textbf} { \c{emph} {\1} } }
-          \l_jwjournal_tmp_tl
-        \regex_replace_all:nnN
-          { \*\* (.*?) \*\* }
-          { \c{textbf} {\1} }
-          \l_jwjournal_tmp_tl
-        \regex_replace_all:nnN
-          { \* (.*?) \* }
-          { \c{emph} {\1} }
-          \l_jwjournal_tmp_tl
+        % \regex_replace_all:nnN
+        %   { \*\*\* (.*?) \*\*\* }
+        %   { \c{textbf} { \c{emph} {\1} } }
+        %   \l_jwjournal_tmp_tl
+        % \regex_replace_all:nnN
+        %   { \*\* (.*?) \*\* }
+        %   { \c{textbf} {\1} }
+        %   \l_jwjournal_tmp_tl
+        % \regex_replace_all:nnN
+        %   { \* (.*?) \* }
+        %   { \c{emph} {\1} }
+        %   \l_jwjournal_tmp_tl
+        \jwjournal_regex_replace_case_all_skip_math:nN
+          {
+            { \*\*\* (.*?) \*\*\* } { \c{textbf} { \c{emph} { \1 } } }
+            { \*\* (.*?) \*\* } { \c{textbf} { \1 } }
+            { \* (.*?) \* } { \c{emph} { \1 } }
+          } \l_jwjournal_tmp_tl
 
         \regex_replace_once:nnN
           { >>> \ *? (.*) }
