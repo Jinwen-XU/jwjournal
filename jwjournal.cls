@@ -263,6 +263,22 @@
     \end{JWJournalRight}
   }
 
+\newtcbox \JWJournalCodebox
+  {
+    tcbox~raise~base,
+    nobeforeafter,
+    boxrule=.1pt, boxsep=1.5pt, arc=1pt,
+    left=.5pt, right=.5pt, top=0pt, bottom=0pt,
+    colframe=main-text!60!paper,
+    colback=main-text!3!paper,
+    fontupper=\small\normalfont\ttfamily,
+  }
+\NewDocumentCommand \JWJournalCode { m }
+  {
+    % \textcolor{emph-text}{\texttt{#1}}
+    \JWJournalCodebox{\vphantom{Äpgjy}#1}
+  }
+
 \tl_new:N \g_jwjournal_content_tl
 \NewDocumentEnvironment { jwjournal } { +b }
   {
@@ -360,6 +376,19 @@
         \regex_replace_all:nnN
           { \#\# }
           { \c{section}\* }
+          \l_jwjournal_tmp_tl
+
+        \regex_replace_all:nnN
+          { \`\` }
+          { ❝ }
+          \l_jwjournal_tmp_tl
+        \regex_replace_all:nnN
+          { \` (.*?) \` }
+          { \c{JWJournalCode} {\1} }
+          \l_jwjournal_tmp_tl
+        \regex_replace_all:nnN
+          { ❝ }
+          { \`\` }
           \l_jwjournal_tmp_tl
 
         \regex_match:nVT { ❄️ \ *? -> } \l_jwjournal_tmp_tl
@@ -614,6 +643,15 @@
   }
 
 \pagestyle { empty }
+
+\def\textasterisk{*}
+\def\textbacktick{`}
+\def\textcolon{:}
+\def\textequalsign{=}
+\def\textleftparen{(}
+\def\textrightparen{)}
+\def\textsharp{\#}
+\def\textvert{|}
 
 \endinput
 %%

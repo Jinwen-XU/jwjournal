@@ -91,6 +91,11 @@ Here are the major syntaxes for your main text:
       - `(( <⟨width⟩> {⟨image file name⟩}` or `(( {⟨image file name⟩} <⟨width⟩>`: show image on the left.
       - `)) <⟨width⟩> {⟨image file name⟩}` or `)) {⟨image file name⟩} <⟨width⟩>`: show image on the right.
     > The `<⟨width⟩>` is optional. Here `⟨width⟩` is a number like `0.75`, the unit is `\linewidth`. When `<⟨width⟩>` is not given, the width would be full `\linewidth`.
+1) Code
+    > Due to the current method of implementation, it is unfortunate that one cannot directly insert source code in the document. There are some workarounds though, as described below.
+    - For *inline* code: you may simply write it between two backticks `` `⟨code⟩` ``, similar to the Markdown syntax. However, be aware that special characters need to be escaped, for example, `\` should be written as `\textbackslash`, `{` should be written as `\{`, `%` should be written as `\%`, etc.
+    - For *displayed* code: **this feature is not yet complete.**
+    <!-- - For *displayed* code: store the code into a separate file, and then use `== {⟨file name⟩}` to print it. You may also use an optional argument like `== [⟨language⟩] {⟨file name⟩}` to select the language of your code. -->
 1) Section
     - You may start a new (*unnumbered*)
       - section, via `## {⟨section title⟩}`;
