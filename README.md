@@ -2,6 +2,8 @@
 
 # `jwjournal`, a personal LaTeX class for writing journals
 
+> Package dependencies: [`enumitem`](https://ctan.org/pkg/enumitem), [*`einfart`*](https://ctan.org/pkg/minimalist), [`minimalist`](https://ctan.org/pkg/minimalist), [`needspace`](https://ctan.org/pkg/needspace), [`projlib`](https://ctan.org/pkg/projlib), [`tcolorbox`](https://ctan.org/pkg/tcolorbox).
+
 ## Introduction
 
 A typical journal entry produced by `jwjournal` looks like this:
