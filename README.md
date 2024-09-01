@@ -1,4 +1,4 @@
-<!-- Copyright (C) 2023 by Jinwen XU -->
+<!-- Copyright (C) 2023-2024 by Jinwen XU -->
 
 # `jwjournal`, a personal LaTeX class for writing journals
 
@@ -27,9 +27,9 @@ Codewise, it is as simple as below:
   (( <0.45> {example-image-c}
 ```
 
-> It is also possible to write the date as `2023/01/01`.
+> It is also possible to write the date with other separators, such as `2023/01/01` or `2023.01.01`.
 
-> With the options `month-day-year` or `day-month-year`, you can also write date in the format `mm-dd-yyyy` or `dd-mm-yyyy`, respectively. You may refer to the English and French demo documents for examples.
+> With the options `month-day-year` or `day-month-year`, you can also write date in the format `mm-dd-yyyy` or `dd-mm-yyyy`, respectively. You may refer to the English, French and German demo documents for examples.
 
 Every day of the week has its unique color, like this:
 ![image](https://github.com/Jinwen-XU/jwjournal/raw/main/screenshots/demo2.png)
@@ -46,7 +46,7 @@ By the way, the conversion from plain date string like `2023-01-01` to natural l
 
 The structure of the document is very simple:
 ```latex
-\documentclass[11pt, paperstyle = light yellow, color entry]{jwjournal}
+\documentclass[11pt, paperstyle = light yellow, color entry, use indent = false]{jwjournal}
 \UseLanguage{⟨language⟩} % For English this line can be omitted.
 \begin{document}
 
@@ -64,6 +64,12 @@ The available class options include:
 - `color entry` adds more color to the title of each entry;
 - `scroll` turns the scroll mode on, which generates a single-page pdf similar to a long screenshot.
 
+> There are also some relevant options provided by the base class of `jwjournal`:
+> - `use indent = false`: disable the paragraph indentation and add some space between each paragraph instead.
+> - `use style = ⟨provided style⟩`: select the designing style of the current article; for our purpose here, it is recommended to use the style `classical` (with this the option `use indent = false` is added by default), together with the options `title in boldface` and `title in sffamily`, see the comment below regarding the usage of "Section".
+>
+> You may refer to the demo documents to see their actual usage.
+
 Here are the major syntaxes for your main text:
 1) Title
     - Any line begins with date like `2023-01-01` or `2023/01/01` would be regard as the *Title* line.
@@ -72,7 +78,7 @@ Here are the major syntaxes for your main text:
       ```
       2023-01-01 Sunny | Apartment
       ```
-    > With the options `month-day-year` or `day-month-year`, you can also write date in the format `mm-dd-yyyy` or `dd-mm-yyyy`, respectively. You may refer to the English and French demo documents for examples.
+    > With the options `month-day-year` or `day-month-year`, you can also write date in the format `mm-dd-yyyy` or `dd-mm-yyyy`, respectively. You may refer to the English, French and German demo documents for examples.
 1) Note
     - Any line begins with something like `[Note]` would be regard as the *Note* line.
     - Example:
@@ -243,6 +249,12 @@ Language and date format can both be set in two ways: as class option or with co
 ### Scroll mode
 The scroll mode is achieved by directly accessing `\pdfpageheight` (pdfTeX and XeTeX) or `\pageheight` (LuaTeX). The minimal page height is set to be `10in`. It is worth noting that in order to calculate the height needed, the entire content are put into a single box, which puts a limitation on the length of your document (but this usually wouldn't be a problem).
 
-# License
+
+## Acknowledgement
+
+The author would like to thank his friend Junzhuo Zhao for his valuable help with the German language. Danke schön!
+
+
+## License
 
 This work is released under the LaTeX Project Public License, v1.3c or later.

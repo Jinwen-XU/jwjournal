@@ -1,6 +1,6 @@
 %%
-%% Copyright (C) 2023 by Jinwen XU
-%% -------------------------------
+%% Copyright (C) 2023-2024 by Jinwen XU
+%% ------------------------------------
 %%
 %% This file may be distributed and/or modified under the conditions of
 %% the LaTeX Project Public License, either version 1.3c of this license
@@ -12,7 +12,7 @@
 \NeedsTeXFormat{LaTeX2e}[2022-06-01]
 \ProvidesExplClass
   {jwjournal}
-  {2023/12/19} {}
+  {2024/09/01} {}
   {JW's journal class}
 
 \keys_define:nn { jwjournal }
@@ -33,11 +33,11 @@
 
 \sys_if_engine_pdftex:TF
   {
-    \PassOptionsToClass { use indent = false } { minimart }
+    % \PassOptionsToClass { use indent = false } { minimart }
     \LoadClass { minimart }
   }
   {
-    \PassOptionsToClass { use indent = false } { einfart }
+    % \PassOptionsToClass { use indent = false } { einfart }
     \LoadClass { einfart }
   }
 
@@ -554,14 +554,14 @@
           }
         \regex_replace_once:nnN { ❄️ (.*) ❄️ } { ❄️ \1 } \l_jwjournal_tmp_tl
 
-        \regex_replace_once:nnN
-          { ❄️ (\ *)? (\d{4}-\d{1,2}-\d{1,2}) (\ *)? (.*) }
-          { \c{JWJournalEntry} {\2} {\4} }
-          \l_jwjournal_tmp_tl
-        \regex_replace_once:nnN
-          { ❄️ (\ *)? (\d{1,2}-\d{1,2}-\d{4}) (\ *)? (.*) }
-          { \c{JWJournalEntry} {\2} {\4} }
-          \l_jwjournal_tmp_tl
+        % \regex_replace_once:nnN
+        %   { ❄️ (\ *)? (\d{4}-\d{1,2}-\d{1,2}) (\ *)? (.*) }
+        %   { \c{JWJournalEntry} {\2} {\4} }
+        %   \l_jwjournal_tmp_tl
+        % \regex_replace_once:nnN
+        %   { ❄️ (\ *)? (\d{1,2}-\d{1,2}-\d{4}) (\ *)? (.*) }
+        %   { \c{JWJournalEntry} {\2} {\4} }
+        %   \l_jwjournal_tmp_tl
         \regex_replace_once:nnN
           { ❄️ (\ *)? (\d{4} \D \d{1,2} \D \d{1,2}) (\ *)? (.*) }
           { \c{JWJournalEntry} {\2} {\4} }

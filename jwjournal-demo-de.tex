@@ -1,0 +1,118 @@
+\documentclass[11pt, paperstyle=light yellow, color entry, day-month-year,
+  title in boldface, title in sffamily, use style = classical]{jwjournal}
+% "paperstyle = ..." passt die Papierfarbe an, Optionen sind: lightyellow、yellow、parchment、green、lightgray、gray、nord、dark
+% "color entry" fügt dem Titel jedes Eintrags mehr Farbe hinzu
+% "scroll" schaltet den Scroll-Modus ein und kann ein einseitiges PDF ähnlich einem langen Screenshot generieren
+
+\UseLanguage { German }
+
+\begin{document}
+
+
+01.01.2024 Sonnig | Ort
+
+  Im Text erscheinende Daten und Anmerkungen werden nicht erkannt: 25.12.2023, [Anmerkung], können Sie diese ruhig schreiben.
+
+  [Text]
+    Sie können Text in *kursiv*, **fett** oder ***beides*** schreiben.
+    \\
+    Sternchen im Mathematikmodus werden nicht erkannt: $a^* b^*$.
+
+  [Anmerkung] In einigen Sonderfällen kann es notwendig sein, die Sternchen mit~\texttt{\{\}} zu trennen: **genau**{}***wie***{}*dieses*.
+
+  >>> Sie können Text in einen farbigen Block wie diesen einfügen.
+
+  Bilder können eingefügt über:
+
+  || <.4> {example-image} % oder || {example-image} <.4>
+  >> (Anmerkung zum Bild)
+  >> (Weitere Bemerkung...)
+
+  +++
+  Sie können das Bild auch links oder rechts anzeigen:
+  (( <.4> {example-image-a} % oder (( {example-image-a} <.4>
+  -> <.3> % fügen Sie etwas vertikalen Abstand hinzu, hier ist „0.3\baselineskip“
+  )) <.4> {example-image-b} % oder )) {example-image-b} <.4>
+
+
+## {\textsc{Ein neuer Abschnitt}}
+
+02.01.2024
+Unbekannt (das Wetter kann je nach Wunsch auch in die zweite Zeile geschrieben werden)
+
+  Die Farbe der Beschriftungen ändert sich je nach Datum und langer Text wird automatisch umbrochen und eingerückt:
+
+  [Hinweis] Ich habe heute nicht gelernt, aber ich habe sehr, sehr, sehr, sehr, sehr, sehr, sehr, sehr, sehr, sehr, sehr viel Code geschrieben: `Inline-Code`.
+
+  [Achtung] Sonderzeichen im Inline-Code müssen maskiert werden. Beispielsweise sollte `\textbackslash` als `\textbackslash textbackslash` geschrieben werden, `\{` sollte als `\textbackslash\{` geschrieben werden, `\%` sollte als `\textbackslash\%` geschrieben werden usw.
+
+  -----
+
+  Drei oder mehr \textquote{\texttt{-}} in einem separaten Absatz ergeben eine Trennlinie ---
+
+  ---
+
+  --- aber die aktuelle Zeile wird nicht abgeglichen, da sich hinter \texttt{-}\texttt{-}\texttt{-} zusätzlicher Text befindet.
+
+  -----
+
+  Wenn auf die Beschriftung mehrere Absätze folgen, können Sie \texttt{\textbackslash\textbackslash} und \texttt{\slash\slash} verwenden, um sie zu verketten, sodass alle Texte richtig eingerückt werden:
+
+  [Beschriftung] Etwas Text.
+    //
+    Mehr Text (mit \texttt{\slash\slash}, also mit etwas vertikalem Abstand zum obigen Text).
+    //
+    Mehr Text (dasselbe, mit etwas vertikalem Abstand zum obigen Text).
+    //
+    (Einige Anmerkungen)
+    \\
+    (Eine weitere Anmerkung, die aufgrund der Verwendung von \texttt{\textbackslash\textbackslash} direkt neben der obigen Anmerkung)
+    \\
+    (Weitere Anmerkungen --- ähnlich, direkt neben der obigen Anmerkung)
+
+
+
+03.01.2024
+
+  [Anmerkung] Wenn nur das Datum geschrieben wird, dann gäbe es kein zweites Trennzeichen danach.
+
+
++++
+04.01.2024  Bewölkt
+
+  Drei Pluszeichen \texttt{+++} können die aktuelle Seite um etwa eine Zeile vergrößern. Manchmal fallen ein einzelner Satz oder ein paar Wörter auf die nächste Seite --- in solchen Fällen können Sie es verwenden, um den Anzeigeeffekt zu verbessern.
+
+
+
+05.01.2024    Bewölkt       --- Arbeit zu Hause
+===============================================
+
+Sie können Ihren Code auch so organisieren.
+
+
+==========
+06.01.2024    Sonnig        --- Arbeit zu Hause
+==========
+
+Oder so...
+
+
+
+07.01.2024  Bewölkt
+
+  ...
+
+
+
+08.01.2024  Bewölkt
+
+  Eine Woche später wird die Farbe wieder auf die vorherige zurückgesetzt.
+
+
+
+09.01.2024  Bewölkt
+
+  ...
+
+
+\end{document}
