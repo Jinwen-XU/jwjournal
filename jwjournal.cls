@@ -12,7 +12,7 @@
 \NeedsTeXFormat{LaTeX2e}[2022-06-01]
 \ProvidesExplClass
   {jwjournal}
-  {2024/09/01} {}
+  {2024/11/05} {}
   {JW's journal class}
 
 \keys_define:nn { jwjournal }
@@ -603,7 +603,7 @@
       marginparwidth=.75in,
       footnotesep=2em plus 2pt minus 2pt,
     }
-    \hook_gput_code:nnn { begindocument } { jwjournal }
+    \hook_gput_code:nnn { begindocument/end } { jwjournal }
       {
         \setbox0=\vbox
         \bgroup
@@ -632,7 +632,7 @@
       marginparwidth=.75in,
       footnotesep=2em plus 2pt minus 2pt,
     }
-    \hook_gput_code:nnn { begindocument } { jwjournal }
+    \hook_gput_code:nnn { begindocument/end } { jwjournal }
       {
         \begin { jwjournal }
       }
