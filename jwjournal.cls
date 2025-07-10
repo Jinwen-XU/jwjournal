@@ -1,5 +1,5 @@
 %%
-%% Copyright (C) 2023-2024 by Jinwen XU
+%% Copyright (C) 2023-2025 by Jinwen XU
 %% ------------------------------------
 %%
 %% This file may be distributed and/or modified under the conditions of
@@ -12,7 +12,7 @@
 \NeedsTeXFormat{LaTeX2e}[2022-06-01]
 \ProvidesExplClass
   {jwjournal}
-  {2024/11/05} {}
+  {2025/07/10} {}
   {JW's journal class}
 
 \keys_define:nn { jwjournal }
@@ -318,6 +318,10 @@
         { \$ (.*?) \$ } { \0 }
         { \c{\(} (.*?) \c{\)} } { \0 }
         { \c{\[} (.*?) \c{\]} } { \0 }
+        { \c{begin}\{equation\} (.*?) \c{end}\{equation\} } { \0 }
+        { \c{begin}\{equation\*\} (.*?) \c{end}\{equation\*\} } { \0 }
+        { \c{begin}\{align\} (.*?) \c{end}\{align\} } { \0 }
+        { \c{begin}\{align\*\} (.*?) \c{end}\{align\*\} } { \0 }
         #1
       } #2
   }
@@ -328,6 +332,10 @@
         { \$ (.*?) \$ } { \0 }
         { \c{\(} (.*?) \c{\)} } { \0 }
         { \c{\[} (.*?) \c{\]} } { \0 }
+        { \c{begin}\{equation\} (.*?) \c{end}\{equation\} } { \0 }
+        { \c{begin}\{equation\*\} (.*?) \c{end}\{equation\*\} } { \0 }
+        { \c{begin}\{align\} (.*?) \c{end}\{align\} } { \0 }
+        { \c{begin}\{align\*\} (.*?) \c{end}\{align\*\} } { \0 }
         #1
       } #2
   }

@@ -1,4 +1,4 @@
-<!-- Copyright (C) 2023-2024 by Jinwen XU -->
+<!-- Copyright (C) 2023-2025 by Jinwen XU -->
 
 # `jwjournal`, a personal LaTeX class for writing journals
 
